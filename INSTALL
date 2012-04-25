@@ -1,0 +1,49 @@
+
+
+lib_mysqludf_preg  - PCRE functions for mysql
+===============================================
+
+
+== Configuration ==
+
+Most users should be able to simply type ./configure to run the configuration
+script.  If mysql is in an unusual place, try: 
+
+./configure --with-mysql=<path to mysql_config>/mysql_config
+
+If libpcre is in an unusual place, try adding:
+
+--with-pcre-prefix=<path to pcre root>
+
+
+
+Example  (on macosx with fink)
+------------------------------
+./configure --with-pcre-prefix=/sw  --with-mysql=/sw/bin/mysql_config
+
+Please use:  ./configure --help to see the other options
+
+
+== Compile == 
+Type make
+
+
+== Install the library == 
+make install
+
+This will install the library in the configured installation directory,
+which is defaulted to /usr/local/lib.   For the mysql-5.0 series,
+this will need to be in the LD_LIBRARY_PATH of the server.  For the
+5.1 series server, this directory needs to be the 'plugin' directory
+(and still needs to be in the LD_LIBRARY_PATH) of the server).
+
+
+== Install the SQL functions == 
+
+make installdb
+
+To uninstall the functions, you can use:  make uninstalldb
+
+== Run some tests ==
+make test
+

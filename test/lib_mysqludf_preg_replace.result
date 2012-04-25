@@ -1,0 +1,84 @@
+Use mysql;
+DROP DATABASE IF EXISTS `preg_test`;
+CREATE DATABASE `preg_test`;
+USE `preg_test`;
+CREATE TABLE `state` (
+`code` varchar(2) NOT NULL,
+`country_code` varchar(2) NOT NULL,
+`description` varchar(255) NOT NULL,
+PRIMARY KEY  (`code`)
+) ENGINE=HEAP DEFAULT CHARSET=latin1;
+INSERT INTO `state` VALUES ('al','us','Alabama'),('ak','us','Alaska'),('as','us','American Samoa'),('az','us','Arizona'),('ar','us','Arkansas'),('ca','us','California'),('co','us','Colorado'),('ct','us','Connecticut'),('de','us','Delaware'),('dc','us','District of Columbia'),('fm','us','Federated States of Micronesia'),('fl','us','Florida'),('ga','us','Georgia'),('gu','us','Guam'),('hi','us','Hawaii'),('id','us','Idaho'),('il','us','Illinois'),('in','us','Indiana'),('ia','us','Iowa'),('ks','us','Kansas'),('ky','us','Kentucky'),('la','us','Louisiana'),('me','us','Maine'),('mh','us','Marshall Islands'),('md','us','Maryland'),('ma','us','Massachusetts'),('mi','us','Michigan'),('mn','us','Minnesota'),('ms','us','Mississippi'),('mo','us','Missouri'),('mt','us','Montana'),('ne','us','Nebraska'),('nv','us','Nevada'),('nh','us','New Hampshire'),('nj','us','New Jersey'),('nm','us','New Mexico'),('ny','us','New York'),('nc','us','North Carolina'),('nd','us','North Dakota'),('mp','us','Northern Mariana Islands'),('oh','us','Ohio'),('ok','us','Oklahoma'),('or','us','Oregon'),('pw','us','Palau'),('pa','us','Pennsylvania'),('pr','us','Puerto Rico'),('ri','us','Rhode Island'),('sc','us','South Carolina'),('sd','us','South Dakota'),('tn','us','Tennessee'),('tx','us','Texas'),('ut','us','Utah'),('vt','us','Vermont'),('vi','us','Virgin Island'),('va','us','Virginia'),('wa','us','Washington'),('wv','us','West Virginia'),('wi','us','Wisconsin'),('wy','us','Wyoming'),('ab','ca','Alberta'),('bc','ca','British Columbia'),('mb','ca','Manitoba'),('nb','ca','New Brunswick'),('nf','ca','New Foundland'),('nt','ca','Northwest Territories'),('ns','ca','Nova Scotia'),('on','ca','Ontario'),('pe','ca','Prince Edward Island'),('pq','ca','Quebec'),('sk','ca','Saskatchewan'),('yt','ca','Yukon Territories');
+SELECT PREG_REPLACE('/fox/i' , '' ,  'the quick brown fox' ,2 );
+PREG_REPLACE('/fox/i' , '' ,  'the quick brown fox' ,2 )
+the quick brown 
+SELECT PREG_REPLACE('/brown/i' , 'dark green' ,  'the quick brown fox' ,2 );
+PREG_REPLACE('/brown/i' , 'dark green' ,  'the quick brown fox' ,2 )
+the quick dark green fox
+SELECT PREG_REPLACE('/([^\\s]+)(\\s)([^\\s]+)(\\s+)([^\\s]+)(\\s)(.*)/' , '$7$6$5$4$3$2$1' ,  'the quick brown fox' );
+PREG_REPLACE('/([^\\s]+)(\\s)([^\\s]+)(\\s+)([^\\s]+)(\\s)(.*)/' , '$7$6$5$4$3$2$1' ,  'the quick brown fox' )
+fox brown quick the
+SELECT PREG_REPLACE(  '//' , 'a' , 'bbb' );
+PREG_REPLACE(  '//' , 'a' , 'bbb' )
+abababa
+SELECT PREG_REPLACE( '/(new)(\\s+)([a-zA-Z]*)(.*)/i' ,'$1$2 Old$4', description  ) FROM state WHERE description LIKE 'new%' ;
+PREG_REPLACE( '/(new)(\\s+)([a-zA-Z]*)(.*)/i' ,'$1$2 Old$4', description  )
+New  Old
+New  Old
+New  Old
+New  Old
+New  Old
+New  Old
+SELECT PREG_REPLACE( '/([^\\s]*)(\\s+)([^\\s]*)/' ,'$3 $1', description  ) FROM state WHERE PREG_RLIKE( '/^[a-z]+\\s+[a-z]+$/i',description);
+PREG_REPLACE( '/([^\\s]*)(\\s+)([^\\s]*)/' ,'$3 $1', description  )
+Samoa American
+Islands Marshall
+Hampshire New
+Jersey New
+Mexico New
+York New
+Carolina North
+Dakota North
+Rico Puerto
+Island Rhode
+Carolina South
+Dakota South
+Island Virgin
+Virginia West
+Columbia British
+Brunswick New
+Foundland New
+Territories Northwest
+Scotia Nova
+Territories Yukon
+DROP TABLE IF EXISTS `patterns`;
+CREATE TABLE `patterns` (
+`pattern` varchar(255) NOT NULL,
+`replacement` varchar(255) NOT NULL
+) ENGINE=HEAP DEFAULT CHARSET=latin1;
+INSERT INTO `patterns` VALUES 
+('/new/i','old'),
+('/(new)(\\s)([a-zA-Z0-9]+)(.*)/i','$3');
+SELECT pattern,PREG_REPLACE( pattern, replacement , description ) FROM patterns,state WHERE PREG_RLIKE(pattern , description) ORDER by pattern;
+pattern	PREG_REPLACE( pattern, replacement , description )
+/(new)(\s)([a-zA-Z0-9]+)(.*)/i	Hampshire
+/(new)(\s)([a-zA-Z0-9]+)(.*)/i	Jersey
+/(new)(\s)([a-zA-Z0-9]+)(.*)/i	Mexico
+/(new)(\s)([a-zA-Z0-9]+)(.*)/i	York
+/(new)(\s)([a-zA-Z0-9]+)(.*)/i	Brunswick
+/(new)(\s)([a-zA-Z0-9]+)(.*)/i	Foundland
+/new/i	old Hampshire
+/new/i	old Jersey
+/new/i	old Mexico
+/new/i	old York
+/new/i	old Brunswick
+/new/i	old Foundland
+CREATE TABLE `subjects` (
+`subject` LONGBLOB 
+) ;
+INSERT INTO `subjects` VALUES
+('The newest version of the library is the best, maybe' );
+SELECT pattern,PREG_REPLACE( pattern, replacement , subject ) FROM patterns,subjects WHERE PREG_RLIKE(pattern , subject) ORDER by pattern;
+pattern	PREG_REPLACE( pattern, replacement , subject )
+/new/i	The oldest version of the library is the best, maybe
+DROP DATABASE IF EXISTS `preg_test`;

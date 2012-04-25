@@ -1,0 +1,84 @@
+
+
+lib_mysqludf_preg  - PCRE functions for mysql on Windows
+========================================================
+
+
+== Runtime Prerequisites ===
+The pcre dll is the runtime prerequisite in order that the 
+lib_mysqludf_preg udf works properly.  This file can be 
+downloaded from the bin archive at:
+
+http://sourceforge.net/project/showfiles.php?group_id=214730&package_id=261982
+
+
+From this archive, copy the bin/libpcre.dll file to the same place
+where lib_mysqludf_preg.dll will be installed.  For the 5.0 series of
+mysql server, this should be the bin directory directly under the
+Mysql\ Server installation.  For the 5.1 MySQL servers this is the
+directory as specified by the 'plugin_dir' MySQL variable.
+
+The libpcre.dll can also be downloaded from:
+
+http://www.mysqludf.com/lib_mysqludf_preg/index.php
+
+Please note that the dll at the above link was compiled from
+the stock pcre source and not the above referenced sourceforge
+project.  If you decide to compile pcre from the stock source, it
+makes sense to add "LDFLAGS=-avoid-version" to the "make" line.
+
+
+=== Compiling Prerequisites ===
+Compiling lib_mysqludf_preg requires the MinGW compiler and either
+the msys or cywin environment.  Of the 2, the msys environment
+is encouraged.  In either case, the MinGW version of libpcre
+is necessary.  This can be downloaded from the lib archive at:
+
+http://sourceforge.net/project/showfiles.php?group_id=214730&package_id=261982
+
+The MinGW compiler and MSYS environment can be downloaded from
+http://www.ming.org/
+
+Additionally, for the 'mysql' client binary must be available in
+the PATH and must be in a directory *without any spaces in it's name*.
+
+
+=== Configuration === 
+When compiling from the msys environment, a line similar to
+the following should be used:
+
+./configure --with-mysql=no --with-mysqlinclude=<path to mysql.h>  --with-pcre=<path where downloaded pcre lib was unarchived>
+
+If compiling in the cygwin environment, the following should be added
+to the above line:
+
+CC="gcc -mno-cygwin"
+
+
+== Compile == 
+Type make
+
+
+== Install the library == 
+make install
+
+This will install the library in the configured installation directory,
+which is defaulted to /usr/local/lib.   The lib_mysqludf_preg.dll in
+this directory should then be copied to the same directory that 
+the libpcre.dll was copied to, as described in the Prerequisites
+section of this document.
+
+== Install the SQL functions == 
+
+make installdb
+
+To uninstall the functions, you can use:  make uninstalldb
+
+
+== Run some tests ==
+make test
+
+
+
+
+

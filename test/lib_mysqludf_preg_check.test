@@ -1,0 +1,47 @@
+##############################
+#
+# @file lib_mysqludf_preg_check.test
+# This is a file that can be run through mysqltest in order to perform some
+# basic for the libmysql_udf_preg_rlike UDF.  This should
+# usually be invoked through the 'make test' command.
+# To record new test results, use: make lib_mysqludf_preg_check.result
+#
+#
+#############################
+
+####################################################
+# From mysql function.tst & converted
+
+# Here are some valid ones
+#
+select PREG_CHECK("/h[[:alpha:]]+r/") ;
+select PREG_CHECK("/^(a|b)*$/" );
+
+
+# Here are some invalid ones
+select PREG_CHECK(NULL);
+select PREG_CHECK('/goobar');
+select PREG_CHECK('/*.test3/');
+select PREG_CHECK('');
+####################################################
+
+######### try some none-constant patterns 
+#
+--disable_warnings
+DROP TABLE IF EXISTS `patterns`;
+--enable_warnings
+
+CREATE TABLE `patterns` (
+  `pattern` varchar(255)
+) ENGINE=HEAP DEFAULT CHARSET=latin1;
+INSERT INTO `patterns` VALUES 
+       ('/new/i'),
+       ('/barFoo') , 
+       ('') , 
+       ('/*.test3/') , 
+       (NULL) , 
+       ('/(new)(\\s)([a-zA-Z0-9]+)(.*)/i');
+
+SELECT PREG_CHECK( pattern ) FROM patterns;
+
+DROP DATABASE IF EXISTS `preg_test`;

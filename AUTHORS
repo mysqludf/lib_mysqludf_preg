@@ -1,0 +1,13 @@
+
+UDFs
+----
+PREG_CAPTURE - Rich Waters <raw@goodhumans.com>
+PREG_RLIKE - Rich Waters <raw@goodhumans.com>
+PREG_REPLACE - Rich Waters <raw@goodhumans.com>
+LIB_MYSQLUDF_PREG_INFO - Rich Waters <raw@goodhumans.com>
+
+
+Regex Compilation & PCRE
+------------------------
+from_php.c - contains code that was written for php by Philip Hazel. 
+libpcre, itself, was also written by Philip Hazel.

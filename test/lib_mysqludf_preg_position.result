@@ -1,0 +1,61 @@
+Use mysql;
+DROP DATABASE IF EXISTS `preg_test`;
+CREATE DATABASE `preg_test`;
+USE `preg_test`;
+CREATE TABLE `state` (
+`code` varchar(2) NOT NULL,
+`country_code` varchar(2) NOT NULL,
+`description` varchar(255) NOT NULL,
+PRIMARY KEY  (`code`)
+) ENGINE=HEAP DEFAULT CHARSET=latin1;
+INSERT INTO `state` VALUES ('al','us','Alabama'),('ak','us','Alaska'),('as','us','American Samoa'),('az','us','Arizona'),('ar','us','Arkansas'),('ca','us','California'),('co','us','Colorado'),('ct','us','Connecticut'),('de','us','Delaware'),('dc','us','District of Columbia'),('fm','us','Federated States of Micronesia'),('fl','us','Florida'),('ga','us','Georgia'),('gu','us','Guam'),('hi','us','Hawaii'),('id','us','Idaho'),('il','us','Illinois'),('in','us','Indiana'),('ia','us','Iowa'),('ks','us','Kansas'),('ky','us','Kentucky'),('la','us','Louisiana'),('me','us','Maine'),('mh','us','Marshall Islands'),('md','us','Maryland'),('ma','us','Massachusetts'),('mi','us','Michigan'),('mn','us','Minnesota'),('ms','us','Mississippi'),('mo','us','Missouri'),('mt','us','Montana'),('ne','us','Nebraska'),('nv','us','Nevada'),('nh','us','New Hampshire'),('nj','us','New Jersey'),('nm','us','New Mexico'),('ny','us','New York'),('nc','us','North Carolina'),('nd','us','North Dakota'),('mp','us','Northern Mariana Islands'),('oh','us','Ohio'),('ok','us','Oklahoma'),('or','us','Oregon'),('pw','us','Palau'),('pa','us','Pennsylvania'),('pr','us','Puerto Rico'),('ri','us','Rhode Island'),('sc','us','South Carolina'),('sd','us','South Dakota'),('tn','us','Tennessee'),('tx','us','Texas'),('ut','us','Utah'),('vt','us','Vermont'),('vi','us','Virgin Island'),('va','us','Virginia'),('wa','us','Washington'),('wv','us','West Virginia'),('wi','us','Wisconsin'),('wy','us','Wyoming'),('ab','ca','Alberta'),('bc','ca','British Columbia'),('mb','ca','Manitoba'),('nb','ca','New Brunswick'),('nf','ca','New Foundland'),('nt','ca','Northwest Territories'),('ns','ca','Nova Scotia'),('on','ca','Ontario'),('pe','ca','Prince Edward Island'),('pq','ca','Quebec'),('sk','ca','Saskatchewan'),('yt','ca','Yukon Territories');
+SELECT PREG_POSITION( '/(x)(?:(abc)|(xyz))(x)/' , 'xabcx' , 2 ) ;
+PREG_POSITION( '/(x)(?:(abc)|(xyz))(x)/' , 'xabcx' , 2 )
+2
+SELECT PREG_POSITION('/(.*?)(fox)/' , 'the quick brown fox' ,2 );
+PREG_POSITION('/(.*?)(fox)/' , 'the quick brown fox' ,2 )
+17
+SELECT PREG_POSITION( '/(new)\\s+([a-zA-Z]*)(.*)/i' , description, 2  ) FROM state WHERE description LIKE 'new%' ;
+PREG_POSITION( '/(new)\\s+([a-zA-Z]*)(.*)/i' , description, 2  )
+5
+5
+5
+5
+5
+5
+SELECT PREG_POSITION( '/(new)\\s+(?P<word>[^\\s]*)(.*)/i' , description, 'word'  )  FROM state WHERE PREG_RLIKE( '/new/i' , description );
+PREG_POSITION( '/(new)\\s+(?P<word>[^\\s]*)(.*)/i' , description, 'word'  )
+5
+5
+5
+5
+5
+5
+SELECT PREG_POSITION( '/"([^"]+)"/' , 'the "quick" brown fox "jumped" over the "lazy" dog' , 1,2 );
+PREG_POSITION( '/"([^"]+)"/' , 'the "quick" brown fox "jumped" over the "lazy" dog' , 1,2 )
+24
+SELECT PREG_POSITION( '/b[^\\s]*/' , 'the quick brown fox jumped up & down' );
+PREG_POSITION( '/b[^\\s]*/' , 'the quick brown fox jumped up & down' )
+11
+SELECT PREG_POSITION( '/b[^\\s]*/' , 'the quick brown fox jumped up & down',0,4);
+PREG_POSITION( '/b[^\\s]*/' , 'the quick brown fox jumped up & down',0,4)
+NULL
+SELECT PREG_POSITION( '/b[^\\s]*/' , 'the quick brown fox jumped up & down',4);
+PREG_POSITION( '/b[^\\s]*/' , 'the quick brown fox jumped up & down',4)
+NULL
+DROP TABLE IF EXISTS `patterns`;
+CREATE TABLE `patterns` (
+`pattern` varchar(255) NOT NULL,
+`groupnum` int NOT NULL ,
+`groupname` varchar(255) NOT NULL,
+`occurence` int NOT NULL
+) ENGINE=HEAP DEFAULT CHARSET=latin1;
+INSERT INTO `patterns` VALUES 
+('/new/i',0,'',1),
+('/(new)(\\s)([a-zA-Z0-9]+)(.*)/i',3,'',1),
+('/(new)(\\s)(?P<thing>[a-zA-Z0-9]+)(.*)/i',0,'thing',1) ;
+SELECT DISTINCT PREG_POSITION( pattern,description,groupnum,occurence) AS w FROM state, patterns WHERE PREG_RLIKE( pattern, description ) AND groupname='' HAVING w IS NOT NULL ORDER BY w;
+w
+1
+5
+DROP DATABASE IF EXISTS `preg_test`;
