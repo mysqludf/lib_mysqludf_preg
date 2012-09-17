@@ -246,7 +246,7 @@ longlong preg_position( UDF_INIT *initid, UDF_ARGS *args, char *is_null,
             groupnum = pregGetGroupNum( re , args , 2 ) ;
 
         // If groupnum found, get the offset
-        if( groupnum >= 0 && groupnum < oveccount )
+        if( groupnum >= 0 && groupnum < (oveccount/3) )
         {
             // ovec is in pairs of starting and ending offsets.  (ie. 
             // ovec[0] is start of whole match, ovec[1] is end of whole 
