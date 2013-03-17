@@ -38,13 +38,17 @@ version of lib_mysqludf_preg.
 
 Some examples:
 -------------
-- SELECT PREG_CAPTURE( '/(new)\\s+([a-zA-Z]*)(.*)/i' , description, 2  ) FROM state WHERE description LIKE 'new%' ;
+- SELECT captured, description FROM
+    (SELECT PREG_CAPTURE( '/(new)\\\\s+([a-zA-Z]*)(.*)/i' , description, 2  ) as captured FROM state WHERE description LIKE 'new%') as t1
+  WHERE captured IS NOT NULL;
 
-- SELECT PREG_POSITION( '/(new)\\s+([a-zA-Z]*)(.*)/i' , description, 2  ) FROM state WHERE description LIKE 'new%' ;
+- SELECT position, description FROM
+    (SELECT PREG_POSITION( '/(new)\\\\s+([a-zA-Z]*)(.*)/i' , description, 2  ) as position FROM state WHERE description LIKE 'new%') as t1
+  WHERE position IS NOT NULL;
 
 - SELECT * from products WHERE PREG_RLIKE( '/hemp/i' , products.title )
 
-- SELECT PREG_REPLACE( '/fox/i' , 'dog' , 'The brown fox' ) 
+- SELECT CONVERT( PREG_REPLACE( '/fox/i' , 'dog' , 'The brown fox' ) USING UTF8) as replaced;
 
 Please see test/lib_udfmysql_preg.test and test/lib_udfmysql_preg.result for 
 more examples.

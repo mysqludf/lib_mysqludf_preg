@@ -23,6 +23,13 @@ Example  (on macosx with fink)
 
 Please use:  ./configure --help to see the other options
 
+Example  (on macosx with MAMP)
+------------------------------
+Follow the example at the link below to compile Mysql and place the lib files in the correct folders
+http://addto.it/Patching-MAMP-2.0.5-to-work-with-Sphinx-2.02
+
+Then configure lib_mysqludf_preg with 
+./configure --with-mysql=/Applications/MAMP/Library/bin/mysql_config
 
 == Compile == 
 Type make
