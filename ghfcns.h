@@ -7,4 +7,5 @@
  *
  */
 
-char *ghstrndup( char *s , int l );
+char *ghstrndup( char *s , size_t l );
+

@@ -30,14 +30,14 @@
  * null-termination instead of lengths, this creates things that can be
  * passed to those functions safely.
  */
-char *ghstrndup( char *s , int l )
+char *ghstrndup( char *s , size_t l )
 {
     char *colval = NULL ;
     
     colval = malloc( l + 1 ) ;
     if( !colval )
     {
-        fprintf( stderr , "Not enough memory: %d\n" , l ) ;
+        fprintf( stderr , "Not enough memory: %zu\n" , l ) ;
         return NULL ;
     }
     memcpy( colval , s , l ) ;

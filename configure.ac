@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT(lib_mysqludf_preg,1.1,raw@goodhumans.net)
+AC_INIT(lib_mysqludf_preg,1.2,raw@goodhumans.net)
 
 AC_CONFIG_AUX_DIR(config)
 
