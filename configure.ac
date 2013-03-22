@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 
-AC_INIT(lib_mysqludf_preg,1.0.1,raw@goodhumans.com)
+AC_INIT(lib_mysqludf_preg,1.0.2,raw@goodhumans.com)
 
 AC_CONFIG_AUX_DIR(config)
 
@@ -25,7 +25,7 @@ fi
 
 AM_PATH_PCRE(1,,AC_MSG_ERROR( "Can't find libpcre" ) )
 
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS(config.h)
 
 AC_OUTPUT([ Makefile
 test/Makefile

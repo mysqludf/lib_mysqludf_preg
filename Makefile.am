@@ -1,5 +1,9 @@
 
+AUTOMAKE_OPTIONS = foreign
+
+
 .PHONY : test mrproper
+
 
 lib_LTLIBRARIES = lib_mysqludf_preg.la
 
