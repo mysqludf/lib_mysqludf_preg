@@ -33,6 +33,12 @@ SELECT PREG_REPLACE( '/(new)(\\s+)([a-zA-Z]*)(.*)/i' ,'$1$2 Old$4', description 
 #### Reverse state
 SELECT PREG_REPLACE( '/([^\\s]*)(\\s+)([^\\s]*)/' ,'$3 $1', description  ) FROM state WHERE PREG_RLIKE( '/^[a-z]+\\s+[a-z]+$/i',description);
 
+###### Check NULL stufff (Bug #4)
+SELECT PREG_REPLACE ('/a*/',NULL, 'America');
+SELECT PREG_REPLACE (NULL ,'foo', 'America');
+SELECT PREG_REPLACE ('/a*/' ,'foo', NULL);
+
+
 ######### try some none-constant patterns & replacements
 #
 --disable_warnings

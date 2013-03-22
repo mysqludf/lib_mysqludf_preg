@@ -15,6 +15,10 @@ If libpcre is in an unusual place, try adding:
 
 --with-pcre-prefix=<path to pcre root>
 
+Version 1.1 changes the way NULLs are handled. To restore the legacy NULL handling:
+
+ --enable-legacy-nulls
+
 
 
 Example  (on macosx with fink)

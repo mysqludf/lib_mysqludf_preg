@@ -1,3 +1,12 @@
+
+
+1.1
+---
+Fixed potential garbage results due to uninitialized argument to pcre_exec
+Return NULL in most cases when NULL is passed in as an argument
+Fixed problem where PREG_CAPTURE didn't return NULL if occurrence was out of bounds
+
+
 1.0.1
 -----
 Fixed autoconf with pcre on Snow Leaopard by upgrading to new pcre.m4

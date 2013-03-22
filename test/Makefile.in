@@ -54,7 +54,8 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/config/ax_lib_mysql.m4 \
 	$(top_srcdir)/config/ax_mysql_bin.m4 \
-	$(top_srcdir)/config/pcre.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/config/pcre.m4 $(top_srcdir)/config/ghmysql.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -108,6 +109,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GHMYSQL_CFLAGS = @GHMYSQL_CFLAGS@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@

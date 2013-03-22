@@ -64,7 +64,8 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/config/ax_lib_mysql.m4 \
 	$(top_srcdir)/config/ax_mysql_bin.m4 \
-	$(top_srcdir)/config/pcre.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/config/pcre.m4 $(top_srcdir)/config/ghmysql.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -104,7 +105,7 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 lib_mysqludf_preg_la_LIBADD =
 am_lib_mysqludf_preg_la_OBJECTS = lib_mysqludf_preg_la-preg.lo \
-	lib_mysqludf_preg_la-ghmysql.lo \
+	lib_mysqludf_preg_la-ghmysql.lo lib_mysqludf_preg_la-ghfcns.lo \
 	lib_mysqludf_preg_la-from_php.lo \
 	lib_mysqludf_preg_la-lib_mysqludf_preg_capture.lo \
 	lib_mysqludf_preg_la-lib_mysqludf_preg_check.lo \
@@ -268,6 +269,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GHMYSQL_CFLAGS = @GHMYSQL_CFLAGS@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -374,7 +376,8 @@ lib_LTLIBRARIES = lib_mysqludf_preg.la
 lib_mysqludf_preg_la_SOURCES = \
 	preg.c preg.h \
 	ghmysql.c ghmysql.h \
-	from_php.c \
+	ghfcns.c ghfcns.h \
+	from_php.c from_php.h \
 	lib_mysqludf_preg_capture.c  \
 	lib_mysqludf_preg_check.c \
 	lib_mysqludf_preg_info.c \
@@ -383,7 +386,8 @@ lib_mysqludf_preg_la_SOURCES = \
 	lib_mysqludf_preg_rlike.c
 
 SUBDIRS = test doc
-lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@
+DIFFPROGRAM := kompare -
+lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@ @GHMYSQL_CFLAGS@
 lib_mysqludf_preg_la_LDFLAGS = -module -avoid-version -no-undefined @PCRE_LIBS@
 EXTRA_DIST = *.sql
 all: config.h
@@ -485,6 +489,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-from_php.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-ghfcns.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-ghmysql.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-lib_mysqludf_preg_capture.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-lib_mysqludf_preg_check.Plo@am__quote@
@@ -528,6 +533,13 @@ lib_mysqludf_preg_la-ghmysql.lo: ghmysql.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='ghmysql.c' object='lib_mysqludf_preg_la-ghmysql.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -c -o lib_mysqludf_preg_la-ghmysql.lo `test -f 'ghmysql.c' || echo '$(srcdir)/'`ghmysql.c
+
+lib_mysqludf_preg_la-ghfcns.lo: ghfcns.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -MT lib_mysqludf_preg_la-ghfcns.lo -MD -MP -MF $(DEPDIR)/lib_mysqludf_preg_la-ghfcns.Tpo -c -o lib_mysqludf_preg_la-ghfcns.lo `test -f 'ghfcns.c' || echo '$(srcdir)/'`ghfcns.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/lib_mysqludf_preg_la-ghfcns.Tpo $(DEPDIR)/lib_mysqludf_preg_la-ghfcns.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='ghfcns.c' object='lib_mysqludf_preg_la-ghfcns.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -c -o lib_mysqludf_preg_la-ghfcns.lo `test -f 'ghfcns.c' || echo '$(srcdir)/'`ghfcns.c
 
 lib_mysqludf_preg_la-from_php.lo: from_php.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -MT lib_mysqludf_preg_la-from_php.lo -MD -MP -MF $(DEPDIR)/lib_mysqludf_preg_la-from_php.Tpo -c -o lib_mysqludf_preg_la-from_php.lo `test -f 'from_php.c' || echo '$(srcdir)/'`from_php.c
@@ -1045,7 +1057,7 @@ maintainer-dist:
 	git tag "$(PACKAGE)-$(VERSION)"
 
 maintainer-diff:
-	git diff "$(PACKAGE)-$(DIFFVERSION)" . | gitx
+	git diff "$(PACKAGE)-$(DIFFVERSION)" . | $(DIFFPROGRAM)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

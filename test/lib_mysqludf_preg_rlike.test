@@ -33,6 +33,13 @@ SELECT PREG_RLIKE( '/the quick brown fox/' , 'What do you know about THE QUICK B
 SELECT PREG_RLIKE('/The quick brown fox/i' , 'the quick brown fox' );
 
 
+####################################################
+# Empty String (Bug #6)
+SELECT PREG_RLIKE('/.*/', '');
+SELECT PREG_RLIKE('/a*/', 'b');
+SELECT PREG_RLIKE('/a*/', '');
+
+
 
 ####################################################
 #### Here are some others

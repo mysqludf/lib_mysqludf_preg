@@ -1,16 +1,15 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-
 .PHONY : test mrproper
-
 
 lib_LTLIBRARIES = lib_mysqludf_preg.la
 
 lib_mysqludf_preg_la_SOURCES = \
 	preg.c preg.h \
 	ghmysql.c ghmysql.h \
-	from_php.c \
+	ghfcns.c ghfcns.h \
+	from_php.c from_php.h \
 	lib_mysqludf_preg_capture.c  \
 	lib_mysqludf_preg_check.c \
 	lib_mysqludf_preg_info.c \
@@ -19,9 +18,9 @@ lib_mysqludf_preg_la_SOURCES = \
 	lib_mysqludf_preg_rlike.c
 
 SUBDIRS=test doc
+DIFFPROGRAM:=kompare -
 
-
-lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@
+lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@ @GHMYSQL_CFLAGS@
 lib_mysqludf_preg_la_LDFLAGS = -module -avoid-version -no-undefined @PCRE_LIBS@
 
 EXTRA_DIST = *.sql
@@ -58,5 +57,5 @@ maintainer-dist:
 	git tag "$(PACKAGE)-$(VERSION)"
 
 maintainer-diff:
-	git diff "$(PACKAGE)-$(DIFFVERSION)" . | gitx
+	git diff "$(PACKAGE)-$(DIFFVERSION)" . | $(DIFFPROGRAM)
 

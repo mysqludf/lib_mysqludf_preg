@@ -1,12 +1,13 @@
 AC_PREREQ(2.59)
 
-AC_INIT(lib_mysqludf_preg,1.0.2,raw@goodhumans.com)
+AC_INIT(lib_mysqludf_preg,1.1,raw@goodhumans.net)
 
 AC_CONFIG_AUX_DIR(config)
 
 m4_include([config/ax_lib_mysql.m4])
 m4_include([config/ax_mysql_bin.m4])
 m4_include([config/pcre.m4])
+m4_include([config/ghmysql.m4])
 
 AM_INIT_AUTOMAKE
 
@@ -24,6 +25,8 @@ if test -n "$MYSQL_PLUGINDIR" && test "$libdir" == '${exec_prefix}/lib' ; then
 fi
 
 AM_PATH_PCRE(1,,AC_MSG_ERROR( "Can't find libpcre" ) )
+
+AX_GHMYSQL
 
 AC_CONFIG_HEADERS(config.h)
 
