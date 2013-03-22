@@ -5,17 +5,29 @@ AUTOMAKE_OPTIONS = foreign
 
 lib_LTLIBRARIES = lib_mysqludf_preg.la
 
-lib_mysqludf_preg_la_SOURCES = \
-	preg.c preg.h \
-	ghmysql.c ghmysql.h \
-	ghfcns.c ghfcns.h \
-	from_php.c from_php.h \
+CFILES=	\
+	preg.c \
+	ghmysql.c \
+	ghfcns.c \
+	from_php.c \
 	lib_mysqludf_preg_capture.c  \
 	lib_mysqludf_preg_check.c \
 	lib_mysqludf_preg_info.c \
 	lib_mysqludf_preg_position.c \
 	lib_mysqludf_preg_replace.c \
 	lib_mysqludf_preg_rlike.c
+
+HFILES = \
+	preg.h \
+	ghmysql.h \
+	ghfcns.h \
+	from_php.h
+
+lib_mysqludf_preg_la_SOURCES = \
+	$(CFILES) \
+	$(HFILES)
+
+DLL_OBJS=$(CFILES:%.c=.libs/lib_mysqludf_preg_la-%.o)
 
 SUBDIRS=test doc
 DIFFPROGRAM:=kompare -
@@ -59,3 +71,5 @@ maintainer-dist:
 maintainer-diff:
 	git diff "$(PACKAGE)-$(DIFFVERSION)" . | $(DIFFPROGRAM)
 
+lib_mysqludf_preg.dll: $(DLL_OBJS)
+	$(CC) -shared -o lib_mysqludf_preg.dll -Wl,"--strip-all" -Wl,"--export-all-symbols" $(DLL_OBJS) /opt/mingw/pcre/lib/libpcre.a

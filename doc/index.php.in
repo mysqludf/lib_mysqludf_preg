@@ -1,0 +1,52 @@
+<?php
+	require_once('../include.php');
+?>
+
+<?php OutputHandler::current()->mark('column1'); ?>
+<div class="sidebaritem">
+    <div class="sbihead">
+        <h1>Download</h1>
+    </div>
+    <div class="sbilinks">
+    <h2>Version <__VERSION__></h2>
+        <ul>
+			<li><a href="<DISTFILE>">Source Archive</a></li>
+            <li><a href="<WINBINFILE>">Windows DLLs</a></li>
+        </ul>
+    </div>
+</div>
+<div class="sidebaritem">
+    <div class="sbihead">
+        <h1>Information</h1>
+    </div>
+    <div class="sbicontent">
+        <p>
+A library of functions that add support for perl compatible regular expressions to MySQL.
+        </p>
+    </div>
+</div>
+<?php OutputHandler::current()->endmark(); ?>
+
+<?php XMLMenu::placeCornerBlocks(); ?>
+
+<?php OutputHandler::current()->mark('column1'); ?>
+<div class="sidebaritem">
+    <div class="sbihead">
+        <h1>See also</h1>
+    </div>
+    <div class="sbicontent">
+		<ul class="menu">
+		</ul>
+     </div>
+</div>
+<?php OutputHandler::current()->endmark(); ?>
+<?php include( 'lib_mysqludf_preg.frag' ) ;?>
+<hr size="1" />
+<p>&nbsp;</p>
+<dl compact="compact">
+  <dt>&nbsp;</dt>
+</dl>
+</body>
+</html>
+
+
