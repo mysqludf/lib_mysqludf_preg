@@ -205,6 +205,15 @@ longlong preg_position( UDF_INIT *initid, UDF_ARGS *args, char *is_null,
     *error = 0 ;                /* default to no error */
     *ptr->return_buffer = '\0'; /* clear return value */
 
+#ifndef GH_1_0_NULL_HANDLING
+    if( ghargIsNullConstant( args , 0 ) || ghargIsNullConstant( args , 1 ) 
+        || ghargIsNullConstant( args , 2 ) ) 
+    {
+        *is_null = 1 ; 
+        return NULL ; 
+    }
+#endif
+
     // compile the regex if necessary
     if( ptr->constant_pattern )
         re = ptr->re ;

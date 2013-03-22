@@ -51,8 +51,17 @@ POSSIBILITY OF SUCH DAMAGE.
  * with a mysql udf.
  */
 
-#include "ghmysql.h"
-#include "preg.h"
+#include "pcre.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+//#include "ghmysql.h"
+//#include "preg.h"
+
+#include "ghfcns.h"
+
 #undef HAVE_SETLOCALE   // R.A.W
 
 
@@ -104,7 +113,7 @@ pcre *compileRegex( char *regex , int regex_len , char *msg , int msglen )
 	char				*p, *pp;
 	char				*pattern;
 	int					 do_study = 0;
-	int					 poptions = 0;
+	//int					 poptions = 0;
 	unsigned const char *tables = NULL;
     char buf[ 1024 ] ;
 
@@ -122,7 +131,7 @@ pcre *compileRegex( char *regex , int regex_len , char *msg , int msglen )
 
 	/* Try to lookup the cached regex entry, and if successful, just pass
 	   back the compiled pattern, otherwise go on and compile it. */
-	regex_len = strlen(regex);
+	//regex_len = strlen(regex);
 
 //R.A.W.
 #if 0  
@@ -397,8 +406,8 @@ char *pregReplace(pcre *re , pcre_extra *extra ,
 	int				 size_offsets;		/* Size of the offsets array */
 	int				 new_len;			/* Length of needed storage */
 	int				 alloc_len;			/* Actual allocated length */
-	int				 eval_result_len=0;	/* Length of the eval'ed or
-										   function-returned string */
+	//int				 eval_result_len=0;	/* Length of the eval'ed or
+    //function-returned string */
 	int				 match_len;			/* Length of the current match */
 	int				 backref;			/* Backreference number */
 	int				 eval;				/* If the replacement string should be eval'ed */
@@ -413,13 +422,13 @@ char *pregReplace(pcre *re , pcre_extra *extra ,
 					*match,				/* The current match */
 					*piece,				/* The current piece of subject */
 					*replace_end=NULL,	/* End of replacement string */
-					*eval_result,		/* Result of eval or custom function */
 					 walk_last;			/* Last walked character */
+    //*eval_result,		/* Result of eval or custom function */
 	int				 rc;
 
 	if (extra == NULL) {
         // R.A.W.
-        memset( &extra , 0 , sizeof( extra ) ) ;
+        memset( &extra_data , 0 , sizeof( extra_data ) ) ;
 		extra_data.flags = PCRE_EXTRA_MATCH_LIMIT | PCRE_EXTRA_MATCH_LIMIT_RECURSION;
 		extra = &extra_data;
 	}

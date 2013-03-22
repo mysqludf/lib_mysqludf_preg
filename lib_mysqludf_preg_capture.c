@@ -221,6 +221,16 @@ char *preg_capture(UDF_INIT *initid , UDF_ARGS *args, char *result,
     *ptr->return_buffer = '\0'; /* clear return value */
     *length = 0 ;               /* just to be safe  */
 
+#ifndef GH_1_0_NULL_HANDLING
+    if( ghargIsNullConstant( args , 0 ) || ghargIsNullConstant( args , 1 ) 
+        || ghargIsNullConstant( args , 2 ) ) 
+    {
+        //fprintf( stderr , "null subject. Returning NULL\n" ) ; 
+        *is_null = 1 ; 
+        return NULL ; 
+    }
+#endif
+
     // compile the regex if necessary
     if( ptr->constant_pattern )
         re = ptr->re ;

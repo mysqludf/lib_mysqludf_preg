@@ -162,6 +162,14 @@ longlong preg_check( UDF_INIT *initid ,  UDF_ARGS *args, char *is_null,
     pcre *re ;                  /* the compiled regex */
 
 
+#ifndef GH_1_0_NULL_HANDLING
+    if( ghargIsNullConstant( args , 0 ) )
+    {
+        *is_null = 1 ; 
+        return NULL ; 
+    }
+#endif
+
     ptr = (struct preg_s *) initid->ptr ;
     if( args->args[0] && args->lengths[0] )
     {

@@ -166,8 +166,17 @@ longlong preg_rlike( UDF_INIT *initid ,  UDF_ARGS *args, char *is_null,
     int rc ;
     pcre *re ;                  /* the compiled regex */
 
+#ifndef GH_1_0_NULL_HANDLING
+        if( ghargIsNullConstant( args , 0 ) || ghargIsNullConstant( args , 1 ) )
+        {
+            *is_null = 1 ; 
+            return NULL ; 
+        }
+#endif
+
     ptr = (struct preg_s *) initid->ptr ;
-    if( args->args[1] && args->lengths[1] )
+    // Need to leave out the length check here because some patterns can return true against an empty string
+    if( args->args[1] /*&& args->lengths[1]*/ )
     {
         if( ptr->constant_pattern )
         {

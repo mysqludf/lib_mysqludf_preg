@@ -168,7 +168,6 @@ my_bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
     return 0;
 }
 
-
 /**
  * @fn char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result, 
  *                         unsigned long *length, char *is_null, char *error )
@@ -216,6 +215,14 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
     *is_null = 0 ;
     *error = 0 ;                /* default to no error */
 
+#ifndef GH_1_0_NULL_HANDLING
+    if( ghargIsNullConstant( args , 2 ) || ghargIsNullConstant( args , 0 ) ) 
+    {
+        *is_null = 1 ; 
+        return NULL ; 
+    }
+#endif
+
     if( ptr->constant_pattern )
     {
         re = ptr->re ;
@@ -229,6 +236,13 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
             *error = 1 ;
             return  NULL ;
         }
+    }
+
+    int nullReplacement ; 
+    nullReplacement = 0 ; 
+    if( ghargIsNullConstant( args , 1 ) ) 
+    {
+        nullReplacement = 1 ; 
     }
 
     replacement = ghargdups( args , 1 , &repl_len ) ;
@@ -262,11 +276,22 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
         limit = -1 ;
     }
 
+    fprintf( stderr, "REPLA %s\n",replacement ) ;
+
     s = pregReplace( re , NULL , subject, subject_len , replacement , 
                      repl_len , 0 , &s_len , limit , &count , 
                      msg ,  sizeof(msg) ) ;
 
-    result = pregMoveToReturnValues( initid ,length,is_null , error,s,s_len  );
+#ifndef GH_1_0_NULL_HANDLING
+    if( nullReplacement && s && subject && strcmp( s , subject ) ) {
+        result = NULL  ;
+        *is_null = 1 ; 
+    }
+    else 
+#endif
+    {
+        result = pregMoveToReturnValues( initid ,length,is_null , error,s,s_len  );
+    }
 
     free( subject );
     free( replacement ) ;

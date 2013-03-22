@@ -240,7 +240,8 @@ char *pregSkipToOccurence( pcre *re , char *subject , int subject_len ,
     ex_subject = subject ; 
     
     // Skip over the 1st N occurences
-    while( occurence-- && subject_offset < subject_len ) {
+
+    while( occurence-- && subject_offset <= subject_len ) {
 
         // Run the regex and find the groupnum if possible
         *rc = pcre_exec(re, NULL,  subject + subject_offset , 
@@ -345,9 +346,11 @@ my_bool pregInit(UDF_INIT *initid, UDF_ARGS *args, char *message)
     
     if( ghargIsNullConstant( args , 0 ) ) 
     {
-        strcpy( message, "NULL pattern" ) ;
         ptr->constant_pattern = 1 ;
+#ifdef GH_1_0_NULL_HANDLING
+        strcpy( message, "NULL pattern" ) ;
         return 1 ;
+#endif
     }
 
 
