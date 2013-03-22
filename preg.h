@@ -29,6 +29,7 @@
 
 // Include the libpcre headers
 #include <pcre.h>
+#include "from_php.h"
 
 /*
  * PCRE Structures:
@@ -45,13 +46,15 @@ struct preg_s {
  */
 
 // from_php.c
-pcre *compileRegex( char *regex , int regex_len , char *msg , int msglen ) ;
+//pcre *compileRegex( char *regex , int regex_len , char *msg , int msglen ) ;
+
+/*
 char *pregReplace(pcre *re , pcre_extra *extra , 
                   char *subject, int subject_len, char *replace, 
                   int replace_len , 
                   int is_callable_replace, int *result_len, int limit, 
                   int *replace_count, char *msg , int msglen );
-
+*/
 // preg.c
 void destroyPtrInfo( struct preg_s *ghptr );
 int initPtrInfo( struct preg_s *ghptr , UDF_ARGS *args,char*msg );

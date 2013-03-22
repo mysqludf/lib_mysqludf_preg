@@ -71,7 +71,7 @@ typedef long long longlong;
  */
 char *ghargdup( UDF_ARGS *args,int i ) ;
 char *ghargdups( UDF_ARGS *args,int i , unsigned long *l) ;
-char *ghstrndup( char *s , int l );
+//char *ghstrndup( char *s , int l );
 int ghargIsNullConstant(UDF_ARGS *args, int argNum);
 
 #endif
