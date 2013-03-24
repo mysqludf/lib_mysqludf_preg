@@ -104,7 +104,7 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 lib_mysqludf_preg_la_LIBADD =
-am_lib_mysqludf_preg_la_OBJECTS = lib_mysqludf_preg_la-preg.lo \
+am__objects_1 = lib_mysqludf_preg_la-preg.lo \
 	lib_mysqludf_preg_la-ghmysql.lo lib_mysqludf_preg_la-ghfcns.lo \
 	lib_mysqludf_preg_la-from_php.lo \
 	lib_mysqludf_preg_la-lib_mysqludf_preg_capture.lo \
@@ -113,6 +113,8 @@ am_lib_mysqludf_preg_la_OBJECTS = lib_mysqludf_preg_la-preg.lo \
 	lib_mysqludf_preg_la-lib_mysqludf_preg_position.lo \
 	lib_mysqludf_preg_la-lib_mysqludf_preg_replace.lo \
 	lib_mysqludf_preg_la-lib_mysqludf_preg_rlike.lo
+am__objects_2 =
+am_lib_mysqludf_preg_la_OBJECTS = $(am__objects_1) $(am__objects_2)
 lib_mysqludf_preg_la_OBJECTS = $(am_lib_mysqludf_preg_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -373,11 +375,11 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 lib_LTLIBRARIES = lib_mysqludf_preg.la
-lib_mysqludf_preg_la_SOURCES = \
-	preg.c preg.h \
-	ghmysql.c ghmysql.h \
-	ghfcns.c ghfcns.h \
-	from_php.c from_php.h \
+CFILES = \
+	preg.c \
+	ghmysql.c \
+	ghfcns.c \
+	from_php.c \
 	lib_mysqludf_preg_capture.c  \
 	lib_mysqludf_preg_check.c \
 	lib_mysqludf_preg_info.c \
@@ -385,6 +387,17 @@ lib_mysqludf_preg_la_SOURCES = \
 	lib_mysqludf_preg_replace.c \
 	lib_mysqludf_preg_rlike.c
 
+HFILES = \
+	preg.h \
+	ghmysql.h \
+	ghfcns.h \
+	from_php.h
+
+lib_mysqludf_preg_la_SOURCES = \
+	$(CFILES) \
+	$(HFILES)
+
+DLL_OBJS = $(CFILES:%.c=.libs/lib_mysqludf_preg_la-%.o)
 SUBDIRS = test doc
 DIFFPROGRAM := kompare -
 lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@ @GHMYSQL_CFLAGS@
@@ -1058,6 +1071,9 @@ maintainer-dist:
 
 maintainer-diff:
 	git diff "$(PACKAGE)-$(DIFFVERSION)" . | $(DIFFPROGRAM)
+
+lib_mysqludf_preg.dll: $(DLL_OBJS)
+	$(CC) -shared -o lib_mysqludf_preg.dll -Wl,"--strip-all" -Wl,"--export-all-symbols" $(DLL_OBJS) /opt/mingw/pcre/lib/libpcre.a
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
