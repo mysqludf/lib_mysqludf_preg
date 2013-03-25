@@ -8,6 +8,7 @@ m4_include([config/ax_lib_mysql.m4])
 m4_include([config/ax_mysql_bin.m4])
 m4_include([config/pcre.m4])
 m4_include([config/ghmysql.m4])
+m4_include([config/ax_pthread.m4])
 
 AM_INIT_AUTOMAKE
 
@@ -25,6 +26,8 @@ if test -n "$MYSQL_PLUGINDIR" && test "$libdir" == '${exec_prefix}/lib' ; then
 fi
 
 AM_PATH_PCRE(1,,AC_MSG_ERROR( "Can't find libpcre" ) )
+
+AX_PTHREAD(,AC_MSG_ERROR( "Can't find libpthread" ) )
 
 AX_GHMYSQL
 

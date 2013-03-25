@@ -165,6 +165,7 @@ longlong preg_rlike( UDF_INIT *initid ,  UDF_ARGS *args, char *is_null,
     int ovector[OVECCOUNT];     /* for use by pcre_exex */
     int rc ;
     pcre *re ;                  /* the compiled regex */
+    pcre_extra extra;
 
 #ifndef GH_1_0_NULL_HANDLING
         if( ghargIsNullConstant( args , 0 ) || ghargIsNullConstant( args , 1 ) )
@@ -174,6 +175,7 @@ longlong preg_rlike( UDF_INIT *initid ,  UDF_ARGS *args, char *is_null,
         }
 #endif
 
+    
     ptr = (struct preg_s *) initid->ptr ;
     // Need to leave out the length check here because some patterns can return true against an empty string
     if( args->args[1] /*&& args->lengths[1]*/ )
@@ -193,7 +195,10 @@ longlong preg_rlike( UDF_INIT *initid ,  UDF_ARGS *args, char *is_null,
             }
         }
 
-       rc = pcre_exec(re, NULL,  args->args[1] , (int)args->lengths[1],
+        memset(&extra, 0, sizeof(extra));
+        pregSetLimits(&extra);
+        
+        rc = pcre_exec(re, &extra,  args->args[1] , (int)args->lengths[1],
                        0,0,ovector, OVECCOUNT); 
 
         if( !ptr->constant_pattern ) 

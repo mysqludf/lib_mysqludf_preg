@@ -435,8 +435,7 @@ char *pregReplace(pcre *re , pcre_extra *extra ,
 
     // R.A.W.  -- from php.ini-reccommended
     // These might be too big. Crashes can occur with this large recursion_limit
-	extra->match_limit = 100000;
-	extra->match_limit_recursion = 100000;
+    pregSetLimits(extra);
 	//extra->match_limit = PCRE_G(backtrack_limit);
 	//extra->match_limit_recursion = PCRE_G(recursion_limit);
 
@@ -673,7 +672,9 @@ char *pregReplace(pcre *re , pcre_extra *extra ,
 			//pcre_handle_exec_error(count TSRMLS_CC);
             // R.A.W.
 			//pcre_handle_exec_error(count);
-            free( result ) ;
+			snprintf(msg, msglen, "Exec failed with error %d (%s)", count, pregExecErrorString(count));
+			*result_len = count;
+			free( result ) ;
 			//efree(result);
 			result = NULL;
 			break;

@@ -129,7 +129,7 @@ my_bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count < 3)
     {
-        strcpy(message,"PREG_REPLACE: requires at least 3 arguments");
+        strncpy(message,"PREG_REPLACE: requires at least 3 arguments", MYSQL_ERRMSG_SIZE);
         return 1;
     }
 
@@ -137,7 +137,7 @@ my_bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
     // to allow for numeric strings.  For now, require an int
     if( args->arg_count > 3 && args->arg_type[3] != INT_RESULT )
     {
-        strcpy(message,"PREG_REPLACE: 4th argument (limit) must be a number");
+        strncpy(message,"PREG_REPLACE: 4th argument (limit) must be a number", MYSQL_ERRMSG_SIZE);
         return 1;
     }
 
@@ -232,7 +232,7 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
         re = pregCompileRegexArg( args , msg , sizeof(msg)) ;
         if( !re )
         {
-            fprintf( stderr , "preg_replace: compile failed: %s\n", msg );
+            ghlogprintf( "PREG_REPLACE: compile failed: %s\n", msg );
             *error = 1 ;
             return  NULL ;
         }
@@ -248,7 +248,7 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
     replacement = ghargdups( args , 1 , &repl_len ) ;
     if( !replacement )
     {
-        fprintf( stderr , "preg_replace: out of memory\n" );
+        ghlogprintf( "PREG_REPLACE: out of memory\n" );
         *error = 1 ;
         if( !ptr->constant_pattern ) 
             pcre_free( re ) ;
@@ -259,7 +259,7 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
     subject = ghargdups( args , 2 , &subject_len ) ;
     if( !subject )
     {
-        fprintf( stderr , "preg_replace: can't allocate for subject\n",msg );
+        ghlogprintf( "PREG_REPLACE: can't allocate for subject\n", msg );
         *error = 1 ;
         if( !ptr->constant_pattern ) 
             pcre_free( re ) ;
@@ -276,7 +276,7 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
         limit = -1 ;
     }
 
-    fprintf( stderr, "REPLA %s\n",replacement ) ;
+    memset(&msg, 0, sizeof(msg));
 
     s = pregReplace( re , NULL , subject, subject_len , replacement , 
                      repl_len , 0 , &s_len , limit , &count , 
@@ -290,6 +290,11 @@ char *preg_replace( UDF_INIT *initid , UDF_ARGS *args, char *result,
     else 
 #endif
     {
+        if (!s && msg[0] != NULL) {
+            *error = 1;
+            ghlogprintf( "PREG_REPLACE: %s\n", msg );
+        }
+        
         result = pregMoveToReturnValues( initid ,length,is_null , error,s,s_len  );
     }
 

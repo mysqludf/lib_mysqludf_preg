@@ -98,7 +98,7 @@ my_bool lib_mysqludf_preg_info_init(UDF_INIT *initid, UDF_ARGS *args,
 {
     if (args->arg_count != 0)
     {
-        strcpy(message,"lib_mysqludf_preg_info: does not accept arguments" ) ;
+        strncpy(message, "lib_mysqludf_preg_info: does not accept arguments", MYSQL_ERRMSG_SIZE) ;
         return 1;
     }
 

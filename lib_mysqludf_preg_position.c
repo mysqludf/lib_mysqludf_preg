@@ -138,7 +138,7 @@ my_bool preg_position_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count < 2)
     {
-        strcpy(message,"PREG_POSITION: requires at least 2 arguments");
+        strncpy(message,"PREG_POSITION: requires at least 2 arguments", MYSQL_ERRMSG_SIZE);
         return 1;
     }
 
@@ -148,7 +148,7 @@ my_bool preg_position_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 
     // occurence must be an int
     if( args->arg_count > 3 && args->arg_type[3] != INT_RESULT ) {
-        strcpy(message,"PREG_POSITION: optional occurence argument must be an integer");
+        strncpy(message,"PREG_POSITION: optional occurence argument must be an integer", MYSQL_ERRMSG_SIZE);
         return 1;
     }
 
@@ -222,7 +222,7 @@ longlong preg_position( UDF_INIT *initid, UDF_ARGS *args, char *is_null,
         re = pregCompileRegexArg( args , msg , sizeof(msg)) ;
         if( !re )
         {
-            fprintf( stderr , "preg_position: compile failed: %s\n", msg );
+            ghlogprintf( "PREG_POSITION: compile failed: %s\n", msg );
             *error = 1 ;
             return  -1 ;
         }
@@ -232,7 +232,7 @@ longlong preg_position( UDF_INIT *initid, UDF_ARGS *args, char *is_null,
     ovector = pregCreateOffsetsVector( re,NULL, &oveccount ,msg,sizeof(msg)) ;
     if( !ovector )
     {
-        fprintf( stderr,"preg_position: can't create offset vector :%s\n", msg );
+        ghlogprintf( "PREG_POSITION: can't create offset vector :%s\n", msg );
         *error = 1 ;
         if( !ptr->constant_pattern ) 
             pcre_free( re ) ;

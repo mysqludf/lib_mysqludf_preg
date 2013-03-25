@@ -119,7 +119,7 @@ my_bool preg_check_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count != 1)
     {
-        strcpy(message,"preg_check: needs exactly one argument");
+        strncpy(message,"preg_check: needs exactly one argument", MYSQL_ERRMSG_SIZE);
         return 1;
     }
     initid->maybe_null=0;	

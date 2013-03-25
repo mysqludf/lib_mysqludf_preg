@@ -53,6 +53,13 @@ this will need to be in the LD_LIBRARY_PATH of the server.  For the
 
 make installdb
 
+If you receive an 'access denied' type of an error, try using something like:
+
+    make MYSQL="mysql -p" installdb
+
+to enable the ability to enter a password.
+
+
 To uninstall the functions, you can use:  make uninstalldb
 
 == Run some tests ==

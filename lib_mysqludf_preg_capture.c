@@ -149,12 +149,12 @@ my_bool preg_capture_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count < 2)
     {
-        strcpy(message,"PREG_CAPTURE: requires at least 2 arguments");
+        strncpy(message,"PREG_CAPTURE: requires at least 2 arguments", MYSQL_ERRMSG_SIZE);
         return 1;
     }
 
     if( args->arg_count > 3 && args->arg_type[3] != INT_RESULT ) {
-        strcpy(message,"PREG_CAPTURE: optional occurence argument must be an integer");
+        strncpy(message,"PREG_CAPTURE: optional occurence argument must be an integer", MYSQL_ERRMSG_SIZE);
         return 1;
     }
 
@@ -239,7 +239,7 @@ char *preg_capture(UDF_INIT *initid , UDF_ARGS *args, char *result,
         re = pregCompileRegexArg( args , msg , sizeof(msg)) ;
         if( !re )
         {
-            fprintf( stderr , "preg_capture: compile failed: %s\n", msg );
+            ghlogprintf( "PREG_CAPTURE: compile failed: %s\n", msg );
             *error = 1 ;
             return  NULL ;
         }
@@ -249,7 +249,7 @@ char *preg_capture(UDF_INIT *initid , UDF_ARGS *args, char *result,
     ovector = pregCreateOffsetsVector( re,NULL, &oveccount ,msg,sizeof(msg)) ;
     if( !ovector )
     {
-        fprintf( stderr,"preg_capture: can't create offset vector :%s\n", msg );
+        ghlogprintf( "PREG_CAPTURE: can't create offset vector :%s\n", msg );
         *error = 1 ;
         if( !ptr->constant_pattern ) 
             pcre_free( re ) ;

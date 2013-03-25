@@ -75,6 +75,8 @@ int pregGetGroupNum( pcre *re ,  UDF_ARGS *args , int argnum );
 char *pregSkipToOccurence( pcre *re , char *subject , int subject_len , 
                            int *ovector  , int oveccount , int occurence, 
                            int *rc);
+void pregSetLimits(pcre_extra *extra);
+const char *pregExecErrorString(int errno);
 
 
 

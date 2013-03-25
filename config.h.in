@@ -1,5 +1,11 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Is pthread_attr_get_np() declared in <pthread.h>? */
+#undef ATTRGETNP_NOT_DECLARED
+
+/* Is pthread_getattr_np declared in <pthread.h>? */
+#undef GETATTRNP_NOT_DECLARED
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
@@ -11,6 +17,18 @@
 
 /* Define to 1 if MySQL libraries are available */
 #undef HAVE_MYSQL
+
+/* Define if you have POSIX threads libraries and header files. */
+#undef HAVE_PTHREAD
+
+/* Do we want a BSD-like thread-attribute interface? */
+#undef HAVE_PTHREAD_ATTR_GET_NP
+
+/* Do we want a Linux-like thread-attribute interface? */
+#undef HAVE_PTHREAD_GETATTR_NP
+
+/* Have PTHREAD_PRIO_INHERIT. */
+#undef HAVE_PTHREAD_PRIO_INHERIT
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -57,6 +75,10 @@
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
+
+/* Define to necessary symbol if this constant uses a non-standard name on
+   your system. */
+#undef PTHREAD_CREATE_JOINABLE
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS

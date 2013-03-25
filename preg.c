@@ -26,6 +26,9 @@
 #include "ghmysql.h"
 #include "preg.h"
 
+/* For pthreads */
+#include <pthread.h>
+
 /*
  * Public Functions:
  */
@@ -236,15 +239,19 @@ char *pregSkipToOccurence( pcre *re , char *subject , int subject_len ,
     char *ex_subject ;          /* position of last match */
     int subject_offset = 0 ;    /* offset of next match from last one */
     char *ret = NULL ;          /* return value from this function */
+    pcre_extra extra;
 
     ex_subject = subject ; 
+    
+    memset(&extra, 0, sizeof(extra));
+    pregSetLimits(&extra);
     
     // Skip over the 1st N occurences
 
     while( occurence-- && subject_offset <= subject_len ) {
 
         // Run the regex and find the groupnum if possible
-        *rc = pcre_exec(re, NULL,  subject + subject_offset , 
+        *rc = pcre_exec(re, &extra,  subject + subject_offset , 
                         subject_len - subject_offset, 0,0,
                         ovector, oveccount); 
         if( *rc <= 0 )
@@ -510,7 +517,7 @@ char *pregMoveToReturnValues( UDF_INIT *initid ,
     }
     else
     {
-        fprintf( stderr , "preg: Error %d returned from pcre\n" , s_len ) ;
+        ghlogprintf("ERROR preg: pcre_exec rturned error %d (%s)\n" , s_len, pregExecErrorString(s_len) ) ;
     }
 
     if( *is_null )
@@ -520,5 +527,150 @@ char *pregMoveToReturnValues( UDF_INIT *initid ,
     else
     {
         return ptr->return_buffer ;
+    }
+}
+
+/**
+ * @fn void pregSetLimits( pcre_extra *extra  ) 
+ *
+ * @brief
+ *     sets safe match/recursion limits in a pcre extra
+ * that should be low enough to prevent stack overflow
+ * crashes.
+ *
+ * @param extra - a pointer to the pcre_extra struct to set
+ *
+ * @details This function sets safe limits as determined by
+ * calculating the currently available stack space for the
+ * this thread, it will also set the flags required to make
+ * pcre_exec honour the limits
+ *
+ */
+void pregSetLimits(pcre_extra *extra)
+{
+    /*
+     * A match_limit_recursion of 100000 is way too high for this context
+     * MySQL's default thread stack size is 256K on 64bit (192K on 32bit)
+     *  - https://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_thread_stack
+     * man pcrestack(3) suggests a rule of thumb of 500 bytes per recursion.  Assuming _no_ other
+     * stack usage that suggests a maximum safe limit of ~512 (64-bit) or ~384 (32-bit)
+     * but better - get the stack size & usage and base the limit on the *available* stack space
+     * if deeper recusrsion is needed then users can increase MySQL's thread_stack variable to
+     * raise the limit
+     *                                                - Travers Carter <tcarter@noggin.com.au>
+     */
+    void *          thread_stack_cur = alloca(1); // End of the stack (hopefully....)
+    void *          thread_stack_next = alloca(1); // For direction....
+    pthread_attr_t  thread_attr;
+    size_t          thread_stack_size=0;
+    size_t          thread_stack_avail=0;
+    void *          thread_stack_addr=0;
+    size_t          pcre_frame_size=0;
+
+
+#ifdef HAVE_PTHREAD_GETATTR_NP
+    // Find the current thread's stack information
+    if (pthread_getattr_np(pthread_self(), &thread_attr) == 0) {
+        if (pthread_attr_getstack(&thread_attr, &thread_stack_addr, &thread_stack_size) == 0) {
+            // NB: thread_stack_addr is always the _lowest_ addres redgardless of the direction of
+            //     of growth (man pthread_attr_getstackaddr(3))
+            if (thread_stack_cur > thread_stack_next) {
+                // Stack grows downwards....
+                thread_stack_avail = thread_stack_cur - thread_stack_addr;
+            } else {
+                thread_stack_avail = thread_stack_size - (thread_stack_cur - thread_stack_addr);
+            }
+        }
+        pthread_attr_destroy(&thread_attr);
+    }
+#else
+    thread_stack_avail = 0 ; 
+#endif
+
+    if (thread_stack_avail == 0) {
+        // Checks failed, assume the MySQL defaults (64/32 bit)
+#ifdef _LP64
+        thread_stack_size  = 256*1024;
+#else
+        thread_stack_size  = 192*1024;
+#endif
+        // And assume a current usage of 25% (_wild_ guess!)
+        thread_stack_avail = thread_stack_size*0.75;
+    }
+
+
+    // PCRE >= 8.30 has a magic call preg_exec(NULL, NULL, NULL, -1, ....) to determine the stack requirements
+    // (returned as a negative number), but errors are also negative (currently down to -25)
+    if (pcre_frame_size = pcre_exec(NULL, NULL, NULL, -1, 0, 0, NULL, 0) < -50) {
+        pcre_frame_size = -pcre_frame_size;
+    } else { 
+#ifdef _LP64
+        // 500 bytes (from pcrestack(3)) is too low, at least on x86_64
+        pcre_frame_size = 1000;
+#else
+        pcre_frame_size = 500;
+#endif
+    }
+
+    // TODO: Fix (or justify?) the 100,000 magic number here (taken from "from_php.c" but pcre defaults to 10,000,000!
+    extra->match_limit           = 100000;
+    extra->match_limit_recursion = (thread_stack_avail-4096)/pcre_frame_size;
+
+    // Force the limits to be honoured....
+    extra->flags |= PCRE_EXTRA_MATCH_LIMIT | PCRE_EXTRA_MATCH_LIMIT_RECURSION;
+}
+
+static const char *_pregExecErrorString[] = {
+    "NO_ERROR",
+    "PCRE_ERROR_NOMATCH",
+    "PCRE_ERROR_NULL",
+    "PCRE_ERROR_BADOPTION",
+    "PCRE_ERROR_BADMAGIC",
+    "PCRE_ERROR_UNKNOWN_OPCODE",
+    "PCRE_ERROR_NOMEMORY",
+    "PCRE_ERROR_NOSUBSTRING",
+    "PCRE_ERROR_MATCHLIMIT",
+    "PCRE_ERROR_CALLOUT",
+    "PCRE_ERROR_BADUTF8",
+    "PCRE_ERROR_BADUTF8_OFFSET",
+    "PCRE_ERROR_PARTIAL",
+    "PCRE_ERROR_BADPARTIAL",
+    "PCRE_ERROR_INTERNAL",
+    "PCRE_ERROR_BADCOUNT",
+    "PCRE_ERROR_DFA_UITEM",
+    "PCRE_ERROR_DFA_UCOND",
+    "PCRE_ERROR_DFA_UMLIMIT",
+    "PCRE_ERROR_DFA_WSSIZE",
+    "PCRE_ERROR_DFA_RECURSE",
+    "PCRE_ERROR_RECURSIONLIMIT, try increasing mysqld:thread_stack",
+    "PCRE_ERROR_NULLWSLIMIT",
+    "PCRE_ERROR_BADNEWLINE",
+    "PCRE_ERROR_BADOFFSET",
+    "PCRE_ERROR_SHORTUTF8",
+    "UNKOWN_ERROR",
+};
+
+/**
+ * @fn const char *pregExecErrorString( int pcre_errno  )
+ *
+ * @brief
+ *     returns a pointer to string containing the sylbolic
+ * name of the pcre error specified by pcre_errno
+ *
+ * @param pcre_errno - an error number returned by pcre_exec()
+ *
+ * @details This function return a pointer to a NULL terminated
+ * string containing the symbolic name of a give pcre error.
+ * The returned strings are static and the caller should not
+ * attempt to either manipulate or free them.
+ *
+ */
+const char *pregExecErrorString(int pcre_errno) {
+    if (pcre_errno >= 0) {
+        return _pregExecErrorString[0];
+    } else if (pcre_errno >= -25) {
+        return _pregExecErrorString[-pcre_errno];
+    } else {
+        return _pregExecErrorString[26];
     }
 }

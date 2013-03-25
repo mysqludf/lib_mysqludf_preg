@@ -65,7 +65,7 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/config/ax_lib_mysql.m4 \
 	$(top_srcdir)/config/ax_mysql_bin.m4 \
 	$(top_srcdir)/config/pcre.m4 $(top_srcdir)/config/ghmysql.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/config/ax_pthread.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -315,6 +315,9 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PCRE_CFLAGS = @PCRE_CFLAGS@
 PCRE_CONFIG = @PCRE_CONFIG@
 PCRE_LIBS = @PCRE_LIBS@
+PTHREAD_CC = @PTHREAD_CC@
+PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
+PTHREAD_LIBS = @PTHREAD_LIBS@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -333,6 +336,7 @@ am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
+ax_pthread_config = @ax_pthread_config@
 bindir = @bindir@
 build = @build@
 build_alias = @build_alias@
@@ -400,8 +404,8 @@ lib_mysqludf_preg_la_SOURCES = \
 DLL_OBJS = $(CFILES:%.c=.libs/lib_mysqludf_preg_la-%.o)
 SUBDIRS = test doc
 DIFFPROGRAM := kompare -
-lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@ @GHMYSQL_CFLAGS@
-lib_mysqludf_preg_la_LDFLAGS = -module -avoid-version -no-undefined @PCRE_LIBS@
+lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@ @GHMYSQL_CFLAGS@ @PTHREAD_CFLAGS@
+lib_mysqludf_preg_la_LDFLAGS = -module -avoid-version -no-undefined @PCRE_LIBS@ @PTHREAD_LIBS@
 EXTRA_DIST = *.sql
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
