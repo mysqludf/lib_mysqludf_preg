@@ -587,13 +587,24 @@ void pregSetLimits(pcre_extra *extra)
     thread_stack_avail = 0 ; 
 #endif
 
-    if (thread_stack_avail == 0) {
-        // Checks failed, assume the MySQL defaults (64/32 bit)
+    if (thread_stack_avail == 0) 
+    {
+        // Checks failed or OS (ie OSX) doesn't support getting current thread stack size
+        // Use information from mysqld global variable
+        //
+        extern unsigned long my_thread_stack_size;
+        thread_stack_size = my_thread_stack_size ; 
+
+        if( !thread_stack_size ) {
+            // Checks failed, assume the MySQL defaults (64/32 bit)
+            // Shouldn't ever really get here, though.
+            ghlogprintf( "Ignoring mysqld:thread_stack. Using mysql defaults.") ; 
 #ifdef _LP64
-        thread_stack_size  = 256*1024;
+            thread_stack_size  = 256*1024;
 #else
-        thread_stack_size  = 192*1024;
+            thread_stack_size  = 192*1024;
 #endif
+        }
         // And assume a current usage of 25% (_wild_ guess!)
         thread_stack_avail = thread_stack_size*0.75;
     }

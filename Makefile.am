@@ -33,7 +33,8 @@ SUBDIRS=test doc
 DIFFPROGRAM:=kompare -
 
 lib_mysqludf_preg_la_CFLAGS = -DSTANDARD -DMYSQL_SERVER @MYSQL_CFLAGS@ @MYSQL_HEADERS@ @PCRE_CFLAGS@ @GHMYSQL_CFLAGS@ @PTHREAD_CFLAGS@
-lib_mysqludf_preg_la_LDFLAGS = -module -avoid-version -no-undefined @PCRE_LIBS@ @PTHREAD_LIBS@
+#lib_mysqludf_preg_la_LDFLAGS = -module -avoid-version -no-undefined @PCRE_LIBS@ @PTHREAD_LIBS@
+lib_mysqludf_preg_la_LDFLAGS = -module -avoid-version @PCRE_LIBS@ @PTHREAD_LIBS@
 
 EXTRA_DIST = *.sql
 
