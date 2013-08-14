@@ -75,7 +75,8 @@ The short instructions are:
 
 Getting libmysql_udf_preg
 ===========================
-Download from: http://www.goodhumans.com/Misc/libmysql_udf_preg-LATEST.tar.gz
+Please visit the github repository at: https://github.com/mysqludf/lib_mysqludf_preg
+The latest stable release is available on the 'master' branch, and the latest development version is available on the latest dev-1.x branch.
 
 
 
@@ -130,16 +131,15 @@ large 'occurence'.  (ie.  /.{65536}(.)/)
 
 Copyright and copying:
 ======================
-Copyright (C) 2007-2009 Rich Waters <raw@goodhumans.com>.  
+Copyright (C) 2007-2013 Rich Waters <raw@goodhumans.net>.  
 
-This file and most contents of this package are licensed under the
-GNU LESSER GENERAL PUBLIC LICENSE.  Please see the COPYING.lesser
-file in this directory for details.
+This file and most contents of this package are licensed under The
+MIT License. Please see the COPYING file in this directory for details.
 
 
 Acknowledgements
 ================
-The amazing PCRE was written by Philip Hazel, and I use 
+The amazing PCRE was written by Philip Hazel, and this project uses 
 some of his code from the php preg extension in from_php.c
 
 The documentation for this project is generated using
