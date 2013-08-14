@@ -1,4 +1,12 @@
 
+1.2
+===
+- Fixed problems with preg_position
+- Documentation improvements
+- Fixed crashes when caused by pcre recursion exceeding stack limits
+- Changed to MIT license from LGPL
+- Improved error reporting
+
 
 1.1
 ---
@@ -10,7 +18,7 @@ Fixed problem where PREG_CAPTURE didn't return NULL if occurrence was out of bou
 1.0.1
 -----
 Fixed autoconf with pcre on Snow Leaopard by upgrading to new pcre.m4
-	
+
 1.0
 ---
 Install correctly into plugin directory for 5.1 versions of mysql
@@ -18,7 +26,7 @@ Fixed problem causing mysqltest to crash
 Added PCRE_CHECK function to test if string is a valid pcre
 Improved configure script to check some standard locations for pcre library
 Fixed preg_capture and preg_position tests so orders are deterministic
-	
+
 
 0.8.1
 -----
@@ -26,12 +34,12 @@ Ported to Windows usiong MinGW
 Added option for configure --with-mysqlinclude instead of mysql_config instead
 	of relying on mysql_config
 
-	
+
 0.7.1
------ 
+-----
 Fixed some documentation generation problems
 
-	
+
 0.7.0
 -----
 Made group argument of preg_capture optional
@@ -39,40 +47,40 @@ Changed preg_offset to preg_position since it does not return an offset
 Added documentation for preg_position
 Modified documentation of preg_capture to include occurence argument
 Autogenerate more of the documentation
-	
+
 
 0.6.7
 -----
 Added preg_offset function
 Added preg_capture argument that specifies the match occurence to capture from
-	
 
-0.6.6 
+
+0.6.6
 -----
 Repository checkpoint to overcome the missing 0.6.5 tag
 
-	
+
 0.6.5
 -----
 Fixed possible overflow bug in preg_replace
 Fixed problem with older pcre annd undefined PCRE_EXTRA_MATCH_LIMIT_RECURSION
 
-	
+
 0.6.4
 -----
 Modified ax_mysql_bin.m4 macros to use path if available
 Modified ax_mysql_bin.m4 to work without -p if not needed
 Fixed ax_mysql_bin.m4 MYSQLBIN_PATH error due to extra spaces before =
 
-	
+
 0.6.3
 -----
-Fixed preg_replace bug - longblobs columns could caused crash 
+Fixed preg_replace bug - longblobs columns could caused crash
 Fixed preg_capture bug - handling error return from pregCreateOffsetsVector
 Added maintainer-diff target to Makefile.am for diffing with svn tag
 Incorporated Arnold's ax_mysql_bin.m4 macros
 
-	
+
 0.6.2
 ------
 Fixed overflow bug that could cause crash in preg_capture.
@@ -85,23 +93,23 @@ Separated tests into separate set for each UDF.
 Added appropriate --disable_warnings to tests when dropping tables & dbs
 Added Makefile.am to test subdirectory and added target to create results
 
-	
+
 0.6.1
 -----
-Changed names from libmysql_udf_... to lib_mysqludf_... 
+Changed names from libmysql_udf_... to lib_mysqludf_...
 Removed 'gh' prefix from SQL functions names and other places
 Changed pcre_ prefix to preg_ for all functions so as to collision with libpcre
 Fixed configure.ac so that PACKAGE_ veriables are correctly set
 Enhanced documentation
 Removed some of the less useful doxgen generated files from the distribution
 
-	
+
 0.5.2
 -----
 Fixed file naming problems and README
 First public release
 
-	
+
 0.5.1
 -----
 Almost the initial public release
