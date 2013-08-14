@@ -76,7 +76,7 @@ The short instructions are:
 Getting libmysql_udf_preg
 ===========================
 Please visit the github repository at: https://github.com/mysqludf/lib_mysqludf_preg
-The latest stable release is available on the 'master' branch, and the latest development version is available on the latest dev-1.x branch.
+The latest released code is available on the 'master' branch, and the latest development version is available on the dev-1.2 branch. This development branch is mostly stable so please use it and report any problems you encounter.
 
 
 
