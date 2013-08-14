@@ -1,0 +1,14 @@
+####
+# This query can exceed the default stack limitations of the mysqld
+# and requires that the thread_stack variable be set to 1M. This is left
+# out of the automated tests so they don't fail when that variable is not
+# big enough, but this query should be run by hand both with and without that
+# variable set. 
+#
+# When it is NOT set, the mysqld should NOT crash. It should, however, 
+# log an error message informing the user of the 'thread_stack' variable. 
+# It will return NULL in that case. When the variable is big enough, this 
+# will return a blank space.
+#
+SELECT preg_replace('/ \(([A-Z]{2}(, )?)*\)$/',' ','Product (AE, AR, AU, BD, BE, BF, BH, BJ, BO, BR, CI, CL, CN, CO, CR, CY, DO, EC, EE, EG, ET, FI, GB, GH, GM, GN, GR, GT, HK, HN, ID, IE, IL, IQ, IR, JO, JP, KE, KP, KW, LB, LR, LY, MA, ML, MR, MU, MW, MX, MY, NE, NG, NI, NL, NO, NZ, OM, PA, PE, PH, PK, PR, QA, SA, SC, SD, SE)',1);
+
