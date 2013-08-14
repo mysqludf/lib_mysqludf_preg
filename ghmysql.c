@@ -130,7 +130,7 @@ int ghargIsNullConstant(UDF_ARGS *args, int argNum)
  */
 void ghlogprintf(char *fmt, ...) {
     va_list vargs;
-    char buf[16];
+    char buf[18];
     time_t now;
     struct tm time_val;
 
@@ -138,7 +138,7 @@ void ghlogprintf(char *fmt, ...) {
 
     now = time(NULL);
     localtime_r(&now, &time_val); 
-    strftime(&buf[0], sizeof(buf), "%y%m%d %H:%M:%S", &time_val);
+    strftime(&buf[0], sizeof(buf), "%y%m%d %H:%M:%S ", &time_val);
     fprintf(stderr, buf);
 
     va_start(vargs, fmt);
