@@ -76,8 +76,7 @@ The short instructions are:
 Getting libmysql_udf_preg
 ===========================
 Please visit the github repository at: https://github.com/mysqludf/lib_mysqludf_preg
-The latest released code is available on the 'master' branch, and the latest development version is available on the dev-1.2 branch. This development branch is mostly stable so please use it and report any problems you encounter.
-
+The latest released code is available on the master branch. Please help test by trying out the latest dev and rc branches too.
 
 
 Reporting Bugs & Feedback
@@ -89,12 +88,13 @@ raw@goodhumans.com
 
 Known Issues & Caveats
 ======================
+- Version 1.2 respects mysqld stack limitations. This should reduce crashing, but you might need to set the thread_stack mysqld variable in order to accommodate some recursion intensive patterns.
 - Version 1.1 changes the way NULLs are handled. To restore the legacy NULL handling, use configure --enable-legacy-nulls
 - pcre_study should be used  (but isn't) for constant patterns;
 - there is no localization or locale support
 - there is no multi-byte character set support
 - some program locations that should be set in autoconf are not
-- It would be nice if there were a persistend cache of compiled regexes
+- It would be nice if there were a persistent cache of compiled regexes
 - It would also be nice if there were a peresistent cache of regex matches.
 This would allow for a more efficient way of retrieving multiple matches than
 repeated called with different 'occurence' arguments. 
@@ -157,3 +157,6 @@ that enables creation of XML - written by Arthur Daniels
 Much of the documentation was generated using Doxygen, at
 http://www.stack.nl/~dimitri/doxygen/ , which was written
 by Dimitri van Heesch.
+
+lib_mysqludf_preg bug fixes & improvements have been contributed by Dan Kozlowski, Serkan Serttop, Travers Carter, employees of the NY State Senate, and some other folks :>). If that includes you and you'd like to be listed here, please send me an email. 
+
