@@ -75,7 +75,7 @@ The short instructions are:
 
 Getting lib_mysqludf_preg
 ===========================
-The best place to get the library is from the github repository at: https://github.com/mysqludf/lib_mysqludf_preg. Please help with the testing by using the code on the testing branch. It is also available at http://www.goodhumans.com/Misc/lib_mysqludf/
+The best place to get the library is from the github repository at: https://github.com/mysqludf/lib_mysqludf_preg. Please help with the testing by using the code on the testing branch. You can also download tarred source archives from http://www.goodhumans.com/Misc/lib_mysqludf/.
 
 
 
