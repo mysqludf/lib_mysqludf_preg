@@ -7,6 +7,7 @@ lib_LTLIBRARIES = lib_mysqludf_preg.la
 
 CFILES=	\
 	preg.c \
+	preg_utils.c \
 	ghmysql.c \
 	ghfcns.c \
 	from_php.c \
@@ -21,6 +22,7 @@ HFILES = \
 	preg.h \
 	ghmysql.h \
 	ghfcns.h \
+	preg_utils.h \
 	from_php.h
 
 lib_mysqludf_preg_la_SOURCES = \

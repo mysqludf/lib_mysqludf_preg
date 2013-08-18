@@ -105,6 +105,7 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 lib_mysqludf_preg_la_LIBADD =
 am__objects_1 = lib_mysqludf_preg_la-preg.lo \
+	lib_mysqludf_preg_la-preg_utils.lo \
 	lib_mysqludf_preg_la-ghmysql.lo lib_mysqludf_preg_la-ghfcns.lo \
 	lib_mysqludf_preg_la-from_php.lo \
 	lib_mysqludf_preg_la-lib_mysqludf_preg_capture.lo \
@@ -381,6 +382,7 @@ AUTOMAKE_OPTIONS = foreign
 lib_LTLIBRARIES = lib_mysqludf_preg.la
 CFILES = \
 	preg.c \
+	preg_utils.c \
 	ghmysql.c \
 	ghfcns.c \
 	from_php.c \
@@ -395,6 +397,7 @@ HFILES = \
 	preg.h \
 	ghmysql.h \
 	ghfcns.h \
+	preg_utils.h \
 	from_php.h
 
 lib_mysqludf_preg_la_SOURCES = \
@@ -516,6 +519,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-lib_mysqludf_preg_replace.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-lib_mysqludf_preg_rlike.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-preg.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib_mysqludf_preg_la-preg_utils.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -544,6 +548,13 @@ lib_mysqludf_preg_la-preg.lo: preg.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='preg.c' object='lib_mysqludf_preg_la-preg.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -c -o lib_mysqludf_preg_la-preg.lo `test -f 'preg.c' || echo '$(srcdir)/'`preg.c
+
+lib_mysqludf_preg_la-preg_utils.lo: preg_utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -MT lib_mysqludf_preg_la-preg_utils.lo -MD -MP -MF $(DEPDIR)/lib_mysqludf_preg_la-preg_utils.Tpo -c -o lib_mysqludf_preg_la-preg_utils.lo `test -f 'preg_utils.c' || echo '$(srcdir)/'`preg_utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/lib_mysqludf_preg_la-preg_utils.Tpo $(DEPDIR)/lib_mysqludf_preg_la-preg_utils.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='preg_utils.c' object='lib_mysqludf_preg_la-preg_utils.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -c -o lib_mysqludf_preg_la-preg_utils.lo `test -f 'preg_utils.c' || echo '$(srcdir)/'`preg_utils.c
 
 lib_mysqludf_preg_la-ghmysql.lo: ghmysql.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_mysqludf_preg_la_CFLAGS) $(CFLAGS) -MT lib_mysqludf_preg_la-ghmysql.lo -MD -MP -MF $(DEPDIR)/lib_mysqludf_preg_la-ghmysql.Tpo -c -o lib_mysqludf_preg_la-ghmysql.lo `test -f 'ghmysql.c' || echo '$(srcdir)/'`ghmysql.c

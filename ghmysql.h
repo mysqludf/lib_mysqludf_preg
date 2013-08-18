@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2007-2013 Rich Waters <raw@goodhumans.net>
  *
@@ -78,6 +79,5 @@ char *ghargdup( UDF_ARGS *args,int i ) ;
 char *ghargdups( UDF_ARGS *args,int i , unsigned long *l) ;
 //char *ghstrndup( char *s , int l );
 int ghargIsNullConstant(UDF_ARGS *args, int argNum);
-void ghlogprintf(char *fmt, ...);
 
 #endif

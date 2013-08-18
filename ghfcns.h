@@ -8,4 +8,5 @@
  */
 
 char *ghstrndup( char *s , size_t l );
+void ghlogprintf(char *fmt, ...);
 

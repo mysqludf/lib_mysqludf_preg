@@ -7,7 +7,7 @@
 CLEANFILES=*.log *.reject
 
 # Include these extensions in dist
-EXTRA_DIST = *.test *.result *.sql 
+EXTRA_DIST = *.test *.result *.sql *.txt
 
 #Get filenames from OS
 PREG_TESTS=$(wildcard *.test)

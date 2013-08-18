@@ -47,8 +47,8 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 
 /*
- * This file was modified my Rich Waters <raw@goodhumans.com> for use
- * with a mysql udf.
+ * This file was modified by Rich Waters <raw@goodhumans.net> for use
+ * with a mysql udf and elsewhere.
  */
 
 #include "pcre.h"
@@ -61,6 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //#include "preg.h"
 
 #include "ghfcns.h"
+#include "preg_utils.h"
 
 #undef HAVE_SETLOCALE   // R.A.W
 

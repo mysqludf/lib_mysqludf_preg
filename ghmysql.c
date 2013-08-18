@@ -119,34 +119,3 @@ int ghargIsNullConstant(UDF_ARGS *args, int argNum)
     return 0 ;
 }
 
-/**
- * @fn void ghlogprintf( fmt, ... )
- *
- * @brief log an error message to stderr in MySQL format
- *
- * @param fmt - a format string as per sprintf()
- * @param ... - varargs as per sprintf()
- *
- * @return void
- *
- * @details - This function writes the specified error message
- * to stderr prefixed by the current time in the same format
- * used by MySQL
- */
-void ghlogprintf(char *fmt, ...) {
-    va_list vargs;
-    char buf[18];
-    time_t now;
-    struct tm time_val;
-
-    memset(&buf, 0, sizeof(buf));
-
-    now = time(NULL);
-    localtime_r(&now, &time_val); 
-    strftime(&buf[0], sizeof(buf), "%y%m%d %H:%M:%S ", &time_val);
-    fprintf(stderr, buf);
-
-    va_start(vargs, fmt);
-    vfprintf(stderr, fmt, vargs);
-    va_end(vargs);
-}

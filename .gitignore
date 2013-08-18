@@ -33,7 +33,20 @@ lib_mysqludf_preg_la-lib_mysqludf_preg_rlike.lo
 lib_mysqludf_preg_la-lib_mysqludf_preg_rlike.o
 lib_mysqludf_preg_la-preg.lo
 lib_mysqludf_preg_la-preg.o
+lib_mysqludf_preg_la-ghfcns.lo
+lib_mysqludf_preg_la-ghfcns.o
+lib_mysqludf_preg_la-pregUtils.lo
+lib_mysqludf_preg_la-pregUtils.o
+lib_mysqludf_preg_la-preg_utils.lo
+lib_mysqludf_preg_la-preg_utils.o
+test/lib_mysqludf_preg_capture.log
+test/lib_mysqludf_preg_check.log
+test/lib_mysqludf_preg_info.log
+test/lib_mysqludf_preg_position.log
+test/lib_mysqludf_preg_replace.log
+test/lib_mysqludf_preg_rlike.log
 libtool
 stamp-h1
 test/Makefile
+lib_mysqludf_preg-*.tar.gz
 
