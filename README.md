@@ -73,16 +73,16 @@ The short instructions are:
 
 
 
-Getting libmysql_udf_preg
+Getting lib_mysqludf_preg
 ===========================
-Please visit the github repository at: https://github.com/mysqludf/lib_mysqludf_preg
-The latest released code is available on the master branch. Please help test by trying out the latest dev and rc releases.
+The best place to get the library is from the github repository at: https://github.com/mysqludf/lib_mysqludf_preg. Please help with the testing by using the code on the testing branch. It is also available at http://www.goodhumans.com/Misc/lib_mysqludf/
+
 
 
 Reporting Bugs & Feedback
 =========================
 Please send information regarding bugs and any other feedback to:
-raw@goodhumans.com
+raw@goodhumans.net
 
 
 
