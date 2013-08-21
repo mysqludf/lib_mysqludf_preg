@@ -127,7 +127,6 @@ void pregSetLimits(pcre_extra *extra)
 #ifndef GH_PREG_NO_MYSQL
         extern unsigned long my_thread_stack_size;
         thread_stack_size = my_thread_stack_size ;
-        //ghlogprintf( "stack_size %d\n",thread_stack_size) ;
 #endif
 
         if( !thread_stack_size ) {
@@ -143,7 +142,6 @@ void pregSetLimits(pcre_extra *extra)
         // And assume a current usage of 25% (_wild_ guess!)
         thread_stack_avail = thread_stack_size*0.75;
     }
-    ghlogprintf( "thread_stack_avaid333333 %d\n",thread_stack_avail ) ;
 
 
     // PCRE >= 8.30 has a magic call preg_exec(NULL, NULL, NULL, -1, ....) to determine the stack requirements
