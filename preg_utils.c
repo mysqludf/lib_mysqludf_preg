@@ -37,6 +37,10 @@
 #include "preg_utils.h"
 #include "ghfcns.h"
 
+#ifndef  GH_PREG_NO_MYSQL
+#include "config.h"
+#endif
+
 /**
  * @fn void pregSetLimits( pcre_extra *extra  ) 
  *
@@ -73,7 +77,7 @@ void pregSetLimits(pcre_extra *extra)
 
 #ifdef HAVE_PTHREAD
 #ifdef HAVE_PTHREAD_GETATTR_NP
-    
+
     pthread_attr_t  thread_attr;
     void *          thread_stack_addr=0;
     void *          thread_stack_cur = alloca(1); // End of the stack (hopefully....)
@@ -94,8 +98,9 @@ void pregSetLimits(pcre_extra *extra)
         pthread_attr_destroy(&thread_attr);
     }
 
+#elifdef HAVE_PTHREAD_GET_STACKSIZE_NP
+    // TODO: Figure this out and get thread_stack_avail properly set for OSX.
 #endif
-    
     
 #ifdef GH_PREG_NO_MYSQL
     if( !thread_stack_avail ) {
@@ -128,7 +133,7 @@ void pregSetLimits(pcre_extra *extra)
         if( !thread_stack_size ) {
             // Checks failed, assume the MySQL defaults (64/32 bit)
             // Shouldn't ever really get here, though.
-            ghlogprintf( "Ignoring mysqld:thread_stack. Using mysql defaults.") ; 
+            ghlogprintf( "Ignoring mysqld:thread_stack. Using mysql defaults.\n") ; 
 #ifdef _LP64
             thread_stack_size  = 256*1024;
 #else
@@ -138,6 +143,7 @@ void pregSetLimits(pcre_extra *extra)
         // And assume a current usage of 25% (_wild_ guess!)
         thread_stack_avail = thread_stack_size*0.75;
     }
+    ghlogprintf( "thread_stack_avaid333333 %d\n",thread_stack_avail ) ;
 
 
     // PCRE >= 8.30 has a magic call preg_exec(NULL, NULL, NULL, -1, ....) to determine the stack requirements

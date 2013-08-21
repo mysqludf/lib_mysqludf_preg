@@ -2350,7 +2350,7 @@ ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 19
+#serial 20
 
 # This is what autoupdate's m4 run will expand.  It fires
 # the warning (with _au_warn_XXX), outputs it into the
@@ -2370,6 +2370,8 @@ ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 # then outputs the replacement expansion.  We do not care
 # about autoupdate's warning because that contains
 # information on what to do *after* running autoupdate.
+
+
 
 
 
@@ -12916,6 +12918,10 @@ case ${host_os} in
         darwin*)
         ax_pthread_flags="-pthread $ax_pthread_flags"
         ;;
+
+        linux-gnu*)  # R.A.W.  Otherwise none gets chosen and that leaves the pthread_getattr_np stuff not found
+        ax_pthread_flags="pthread $ax_pthread_flags"
+        ;;
 esac
 
 if test x"$ax_pthread_ok" = xno; then
@@ -12983,90 +12989,6 @@ $as_echo_n "checking for the pthreads library -l$flag... " >&6; }
                 PTHREAD_LIBS="-l$flag"
                 ;;
         esac
-
-
-        # from tcl.m4  http://svn.apache.org/repos/asf/trafficserver/attic/traffic/trunk/build/tcl.m4
-        ac_fn_c_check_func "$LINENO" "pthread_attr_get_np" "ac_cv_func_pthread_attr_get_np"
-if test "x$ac_cv_func_pthread_attr_get_np" = xyes; then :
-  tcl_ok=yes
-else
-  tcl_ok=no
-fi
-
-        if test $tcl_ok = yes ; then
-
-$as_echo "#define HAVE_PTHREAD_ATTR_GET_NP 1" >>confdefs.h
-
-            { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_attr_get_np declaration" >&5
-$as_echo_n "checking for pthread_attr_get_np declaration... " >&6; }
-if ${tcl_cv_grep_pthread_attr_get_np+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <pthread.h>
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  $EGREP "pthread_attr_get_np" >/dev/null 2>&1; then :
-  tcl_cv_grep_pthread_attr_get_np=present
-else
-  tcl_cv_grep_pthread_attr_get_np=missing
-fi
-rm -f conftest*
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $tcl_cv_grep_pthread_attr_get_np" >&5
-$as_echo "$tcl_cv_grep_pthread_attr_get_np" >&6; }
-            if test $tcl_cv_grep_pthread_attr_get_np = missing ; then
-
-$as_echo "#define ATTRGETNP_NOT_DECLARED 1" >>confdefs.h
-
-            fi
-        else
-            ac_fn_c_check_func "$LINENO" "pthread_getattr_np" "ac_cv_func_pthread_getattr_np"
-if test "x$ac_cv_func_pthread_getattr_np" = xyes; then :
-  tcl_ok=yes
-else
-  tcl_ok=no
-fi
-
-            if test $tcl_ok = yes ; then
-
-$as_echo "#define HAVE_PTHREAD_GETATTR_NP 1" >>confdefs.h
-
-            { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_getattr_np declaration" >&5
-$as_echo_n "checking for pthread_getattr_np declaration... " >&6; }
-if ${tcl_cv_grep_pthread_getattr_np+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-                cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <pthread.h>
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  $EGREP "pthread_getattr_np" >/dev/null 2>&1; then :
-  tcl_cv_grep_pthread_getattr_np=present
-else
-  tcl_cv_grep_pthread_getattr_np=missing
-fi
-rm -f conftest*
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $tcl_cv_grep_pthread_getattr_np" >&5
-$as_echo "$tcl_cv_grep_pthread_getattr_np" >&6; }
-            if test $tcl_cv_grep_pthread_getattr_np = missing ; then
-
-$as_echo "#define GETATTRNP_NOT_DECLARED 1" >>confdefs.h
-
-            fi
-            fi
-        fi
-
-
 
         save_LIBS="$LIBS"
         save_CFLAGS="$CFLAGS"
@@ -13228,8 +13150,6 @@ fi
   x/*) :
     if as_fn_executable_p ${CC}_r; then :
   PTHREAD_CC="${CC}_r"
-else
-  PTHREAD_CC="$CC"
 fi ;; #(
   *) :
     for ac_prog in ${CC}_r
@@ -13277,18 +13197,14 @@ test -n "$PTHREAD_CC" || PTHREAD_CC="$CC"
  ;;
 esac ;; #(
   *) :
-    PTHREAD_CC="$CC" ;;
+     ;;
 esac
-                ;;
-
-                *)
-                PTHREAD_CC="$CC"
                 ;;
             esac
         fi
-else
-        PTHREAD_CC="$CC"
 fi
+
+test -n "$PTHREAD_CC" || PTHREAD_CC="$CC"
 
 
 
@@ -13310,6 +13226,121 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
+
+
+
+
+                # from tcl.m4  http://svn.apache.org/repos/asf/trafficserver/attic/traffic/trunk/build/tcl.m4
+	# Does the pthread-implementation provide
+	# 'pthread_attr_setstacksize' ?
+
+	ac_saved_libs=$LIBS
+	LIBS="$LIBS $PTHREAD_LIBS"
+	for ac_func in pthread_attr_setstacksize
+do :
+  ac_fn_c_check_func "$LINENO" "pthread_attr_setstacksize" "ac_cv_func_pthread_attr_setstacksize"
+if test "x$ac_cv_func_pthread_attr_setstacksize" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_PTHREAD_ATTR_SETSTACKSIZE 1
+_ACEOF
+
+fi
+done
+
+	ac_fn_c_check_func "$LINENO" "pthread_attr_get_np" "ac_cv_func_pthread_attr_get_np"
+if test "x$ac_cv_func_pthread_attr_get_np" = xyes; then :
+  tcl_ok=yes
+else
+  tcl_ok=no
+fi
+
+	if test $tcl_ok = yes ; then
+
+$as_echo "#define HAVE_PTHREAD_ATTR_GET_NP 1" >>confdefs.h
+
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_attr_get_np declaration" >&5
+$as_echo_n "checking for pthread_attr_get_np declaration... " >&6; }
+if ${tcl_cv_grep_pthread_attr_get_np+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+		cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <pthread.h>
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "pthread_attr_get_np" >/dev/null 2>&1; then :
+  tcl_cv_grep_pthread_attr_get_np=present
+else
+  tcl_cv_grep_pthread_attr_get_np=missing
+fi
+rm -f conftest*
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $tcl_cv_grep_pthread_attr_get_np" >&5
+$as_echo "$tcl_cv_grep_pthread_attr_get_np" >&6; }
+	    if test $tcl_cv_grep_pthread_attr_get_np = missing ; then
+
+$as_echo "#define ATTRGETNP_NOT_DECLARED 1" >>confdefs.h
+
+	    fi
+	else
+	    ac_fn_c_check_func "$LINENO" "pthread_getattr_np" "ac_cv_func_pthread_getattr_np"
+if test "x$ac_cv_func_pthread_getattr_np" = xyes; then :
+  tcl_ok=yes
+else
+  tcl_ok=no
+fi
+
+	    if test $tcl_ok = yes ; then
+
+$as_echo "#define HAVE_PTHREAD_GETATTR_NP 1" >>confdefs.h
+
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_getattr_np declaration" >&5
+$as_echo_n "checking for pthread_getattr_np declaration... " >&6; }
+if ${tcl_cv_grep_pthread_getattr_np+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+		    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <pthread.h>
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "pthread_getattr_np" >/dev/null 2>&1; then :
+  tcl_cv_grep_pthread_getattr_np=present
+else
+  tcl_cv_grep_pthread_getattr_np=missing
+fi
+rm -f conftest*
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $tcl_cv_grep_pthread_getattr_np" >&5
+$as_echo "$tcl_cv_grep_pthread_getattr_np" >&6; }
+		if test $tcl_cv_grep_pthread_getattr_np = missing ; then
+
+$as_echo "#define GETATTRNP_NOT_DECLARED 1" >>confdefs.h
+
+		fi
+	    fi
+	fi
+	if test $tcl_ok = no; then
+	    # Darwin thread stacksize API
+	    for ac_func in pthread_get_stacksize_np
+do :
+  ac_fn_c_check_func "$LINENO" "pthread_get_stacksize_np" "ac_cv_func_pthread_get_stacksize_np"
+if test "x$ac_cv_func_pthread_get_stacksize_np" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_PTHREAD_GET_STACKSIZE_NP 1
+_ACEOF
+
+fi
+done
+
+	fi
+	LIBS=$ac_saved_libs
 
 
 

@@ -24,8 +24,14 @@
 /* Do we want a BSD-like thread-attribute interface? */
 #undef HAVE_PTHREAD_ATTR_GET_NP
 
+/* Define to 1 if you have the `pthread_attr_setstacksize' function. */
+#undef HAVE_PTHREAD_ATTR_SETSTACKSIZE
+
 /* Do we want a Linux-like thread-attribute interface? */
 #undef HAVE_PTHREAD_GETATTR_NP
+
+/* Define to 1 if you have the `pthread_get_stacksize_np' function. */
+#undef HAVE_PTHREAD_GET_STACKSIZE_NP
 
 /* Have PTHREAD_PRIO_INHERIT. */
 #undef HAVE_PTHREAD_PRIO_INHERIT

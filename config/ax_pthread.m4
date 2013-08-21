@@ -82,7 +82,7 @@
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 19
+#serial 20
 
 AU_ALIAS([ACX_PTHREAD], [AX_PTHREAD])
 AC_DEFUN([AX_PTHREAD], [
@@ -162,6 +162,10 @@ case ${host_os} in
         darwin*)
         ax_pthread_flags="-pthread $ax_pthread_flags"
         ;;
+
+        linux-gnu*)  # R.A.W.  Otherwise none gets chosen and that leaves the pthread_getattr_np stuff not found
+        ax_pthread_flags="pthread $ax_pthread_flags"
+        ;;
 esac
 
 if test x"$ax_pthread_ok" = xno; then
@@ -189,40 +193,6 @@ for flag in $ax_pthread_flags; do
                 PTHREAD_LIBS="-l$flag"
                 ;;
         esac
-
-
-        # from tcl.m4  http://svn.apache.org/repos/asf/trafficserver/attic/traffic/trunk/build/tcl.m4
-        AC_CHECK_FUNC(pthread_attr_get_np,tcl_ok=yes,tcl_ok=no)
-        if test $tcl_ok = yes ; then
-            AC_DEFINE(HAVE_PTHREAD_ATTR_GET_NP, 1,
-            [Do we want a BSD-like thread-attribute interface?])
-            AC_CACHE_CHECK([for pthread_attr_get_np declaration],
-            tcl_cv_grep_pthread_attr_get_np, [
-            AC_EGREP_HEADER(pthread_attr_get_np, pthread.h,
-                tcl_cv_grep_pthread_attr_get_np=present,
-                tcl_cv_grep_pthread_attr_get_np=missing)])
-            if test $tcl_cv_grep_pthread_attr_get_np = missing ; then
-            AC_DEFINE(ATTRGETNP_NOT_DECLARED, 1,
-                [Is pthread_attr_get_np() declared in <pthread.h>?])
-            fi
-        else
-            AC_CHECK_FUNC(pthread_getattr_np,tcl_ok=yes,tcl_ok=no)
-            if test $tcl_ok = yes ; then
-            AC_DEFINE(HAVE_PTHREAD_GETATTR_NP, 1,
-                [Do we want a Linux-like thread-attribute interface?])
-            AC_CACHE_CHECK([for pthread_getattr_np declaration],
-                tcl_cv_grep_pthread_getattr_np, [
-                AC_EGREP_HEADER(pthread_getattr_np, pthread.h,
-                tcl_cv_grep_pthread_getattr_np=present,
-                tcl_cv_grep_pthread_getattr_np=missing)])
-            if test $tcl_cv_grep_pthread_getattr_np = missing ; then
-                AC_DEFINE(GETATTRNP_NOT_DECLARED, 1,
-                [Is pthread_getattr_np declared in <pthread.h>?])
-            fi
-            fi
-        fi
-
-
 
         save_LIBS="$LIBS"
         save_CFLAGS="$CFLAGS"
@@ -326,20 +296,14 @@ if test "x$ax_pthread_ok" = xyes; then
                   [#handle absolute path differently from PATH based program lookup
                    AS_CASE(["x$CC"],
                      [x/*],
-                     [AS_IF([AS_EXECUTABLE_P([${CC}_r])],
-                        [PTHREAD_CC="${CC}_r"],[PTHREAD_CC="$CC"])],
-                     [AC_CHECK_PROGS([PTHREAD_CC],[${CC}_r],[$CC])])],
-                  [PTHREAD_CC="$CC"])
-                ;;
-
-                *)
-                PTHREAD_CC="$CC"
+                     [AS_IF([AS_EXECUTABLE_P([${CC}_r])],[PTHREAD_CC="${CC}_r"])],
+                     [AC_CHECK_PROGS([PTHREAD_CC],[${CC}_r],[$CC])])])
                 ;;
             esac
         fi
-else
-        PTHREAD_CC="$CC"
 fi
+
+test -n "$PTHREAD_CC" || PTHREAD_CC="$CC"
 
 AC_SUBST(PTHREAD_LIBS)
 AC_SUBST(PTHREAD_CFLAGS)

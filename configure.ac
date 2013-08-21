@@ -9,6 +9,7 @@ m4_include([config/ax_mysql_bin.m4])
 m4_include([config/pcre.m4])
 m4_include([config/ghmysql.m4])
 m4_include([config/ax_pthread.m4])
+m4_include([config/ax_pthread_np.m4])
 
 AM_INIT_AUTOMAKE
 
@@ -28,6 +29,7 @@ fi
 AM_PATH_PCRE(1,,AC_MSG_ERROR( "Can't find libpcre" ) )
 
 AX_PTHREAD(,AC_MSG_ERROR( "Can't find libpthread" ) )
+AX_PTHREAD_NP(,AC_MSG_ERROR( "Can't find libpthread" ) )
 
 AX_GHMYSQL
 

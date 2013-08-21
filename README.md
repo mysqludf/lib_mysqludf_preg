@@ -92,7 +92,6 @@ Known Issues & Caveats
 - Version 1.1 changes the way NULLs are handled. To restore the legacy NULL handling, use configure --enable-legacy-nulls
 - pcre_study should be used  (but isn't) for constant patterns;
 - there is no localization or locale support
-- there is no multi-byte character set support
 - some program locations that should be set in autoconf are not
 - It would be nice if there were a persistent cache of compiled regexes
 - It would also be nice if there were a peresistent cache of regex matches.
