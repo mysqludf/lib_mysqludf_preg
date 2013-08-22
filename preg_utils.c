@@ -98,9 +98,12 @@ void pregSetLimits(pcre_extra *extra)
         pthread_attr_destroy(&thread_attr);
     }
 
-#elifdef HAVE_PTHREAD_GET_STACKSIZE_NP
+#else
+#ifdef HAVE_PTHREAD_GET_STACKSIZE_NP
     // TODO: Figure this out and get thread_stack_avail properly set for OSX.
 #endif
+#endif
+
     
 #ifdef GH_PREG_NO_MYSQL
     if( !thread_stack_avail ) {
