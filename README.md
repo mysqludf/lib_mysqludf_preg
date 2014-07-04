@@ -1,6 +1,9 @@
 
-lib_mysqludf_preg  - PREG functions for mysql
-===============================================
+lib_mysqludf_preg
+=================
+PREG functions for mysql
+------------------------
+
 lib_mysqludf_preg is a library of mysql UDFs (user-defined-functions)
 that provide access to the PCRE (perl compatible-regular-expressions)
 library for pattern matching. The PCRE library is a set of functions
@@ -12,43 +15,51 @@ http://www.pcre.org/.
 
 lib_mysqludf_preg currently provides the following functions:  
 
-PREG_RLIKE( pattern , subject ) - test whether subject matches pattern,
+`PREG_RLIKE( pattern , subject )` - test whether subject matches pattern,
 which is a perl compatible regular expression.   
 
-PREG_CAPTURE(pattern, subject [, capture-group] [, occurence] ) - capture a 
+`PREG_CAPTURE(pattern, subject [, capture-group] [, occurence] )` - capture a 
 named or numeric parenthesized subexpression from a pcre pattern.  Capture
 from a specific match of the regex or the first match is occurence 
 not specified.  
 
-PREG_CHECK( pattern ) - test whether the given pattern is a valid perl 
+`PREG_CHECK( pattern )` - test whether the given pattern is a valid perl 
 compatible regular expression.   
 
-PREG_POSITION(pattern, subject [, capture-group] [, occurence] ) - get the 
+`PREG_POSITION(pattern, subject [, capture-group] [, occurence] )` - get the 
 position in subject of a named or numeric parenthesized subexpression 
 from a pcre pattern.  Capture from a specific match of the regex or 
 the first match if occurence not specified.  
 
-PREG_REPLACE(pattern, replacement, subject [ ,limit ] ) - perform
+`PREG_REPLACE(pattern, replacement, subject [ ,limit ] )` - perform
 a regular expression search and replace using a PCRE pattern.
 
-LIB_MYSQLUDF_PREG_INFO() - obtain information about the currently installed
+`LIB_MYSQLUDF_PREG_INFO()` - obtain information about the currently installed
 version of lib_mysqludf_preg. 
 
 
 
 Some examples:
 -------------
-- SELECT captured, description FROM
+```SQL
+SELECT captured, description FROM
     (SELECT PREG_CAPTURE( '/(new)\\\\s+([a-zA-Z]*)(.*)/i' , description, 2  ) as captured FROM state WHERE description LIKE 'new%') as t1
   WHERE captured IS NOT NULL;
+```
 
-- SELECT position, description FROM
+```SQL
+SELECT position, description FROM
     (SELECT PREG_POSITION( '/(new)\\\\s+([a-zA-Z]*)(.*)/i' , description, 2  ) as position FROM state WHERE description LIKE 'new%') as t1
   WHERE position IS NOT NULL;
+```
 
-- SELECT * from products WHERE PREG_RLIKE( '/hemp/i' , products.title )
+```SQL
+SELECT * from products WHERE PREG_RLIKE( '/hemp/i' , products.title )
+```
 
-- SELECT CONVERT( PREG_REPLACE( '/fox/i' , 'dog' , 'The brown fox' ) USING UTF8) as replaced;
+```SQL
+SELECT CONVERT( PREG_REPLACE( '/fox/i' , 'dog' , 'The brown fox' ) USING UTF8) as replaced;
+```
 
 Please see test/lib_udfmysql_preg.test and test/lib_udfmysql_preg.result for 
 more examples.
@@ -69,7 +80,7 @@ for the full installation instructions.
 
 The short instructions are:
 
-./configure; make  install; make installdb ; make test
+    ./configure; make  install; make installdb ; make test
 
 
 
@@ -114,7 +125,7 @@ For optimal performance, these (or any) UDF's should not be used:
     - on large databases without other query constraints.  Often the PCRE (or
 any function or UDF) can be used in conjunction with a fulltext index 
 constraint in order to reduce the number of rows the need to be operated on.  
-(ie. SELECT PREG_CAPTURE ... WHERE MATCH AGAINST)
+(ie. `SELECT PREG_CAPTURE ... WHERE MATCH AGAINST`)
 
 
 
