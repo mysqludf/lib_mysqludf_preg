@@ -161,8 +161,7 @@ library:
 http://udf-regexp.php-baustelle.de/trac/  - a UDF that implements Oracle-like
 REGEX functions - written by Hartmut Holzgraefe
 
-http://www.xcdsql.org/MySQL/UDF/lib_mysqludf_xql/lib_mysqludf_xql.html - A UDF 
-that enables creation of XML - written by Arthur Daniels
+http://www.github.com/mysqludf - The repository for MySQL UDFs.
 
 Much of the documentation was generated using Doxygen, at
 http://www.stack.nl/~dimitri/doxygen/ , which was written
