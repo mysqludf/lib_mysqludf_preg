@@ -1,0 +1,13 @@
+I found a UDF for MySQL called lib_mysqludf_preg and here’s how I got it to run on Ubuntu 11.04, somewhere in a temporary directory:
+
+sudo apt-get install libpcre3-dev libmysqlclient-dev
+wget www.goodhumans.com/Misc/lib_mysqludf/lib_mysqludf_preg-LATEST.tar.gz
+tar -xf lib_mysqludf_preg-LATEST.tar.gz 
+cd lib_mysqludf_preg-1.1/
+sudo ./configure
+sudo make install
+sudo service mysql restart
+
+At this point the UDF library is installed but the functions are not available yet, so log in to your MySQL command line, preferably as root and create your new preg_replace function like this:
+
+mysql>CREATE FUNCTION preg_replace RETURNS STRING SONAME 'lib_mysqludf_preg.so';
