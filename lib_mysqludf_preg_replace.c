@@ -99,7 +99,7 @@
 /*
  * Public function declarations:
  */
-my_bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
 char *preg_replace( UDF_INIT *initid __attribute__((unused)),
                     UDF_ARGS *args, char *result, unsigned long *length,
                     char *is_null __attribute__((unused)),
@@ -108,7 +108,7 @@ void preg_replace_deinit( UDF_INIT* initid );
 
 
 /**
- * @fn my_bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, 
+ * @fn bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, 
  *                               char *message)
  *
  * @brief
@@ -130,7 +130,7 @@ void preg_replace_deinit( UDF_INIT* initid );
  * Then it checks to make sure there are 3 arguments.   The 4th argument
  * must be a number.
  */
-my_bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
+bool preg_replace_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count < 3)
     {

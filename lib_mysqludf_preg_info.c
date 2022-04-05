@@ -64,7 +64,7 @@
 /**
  * Public function declarations:
  */
-my_bool lib_mysqludf_preg_info_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+bool lib_mysqludf_preg_info_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
 char *lib_mysqludf_preg_info(UDF_INIT *initid __attribute__((unused)),
                              UDF_ARGS *args,
                              char *result, unsigned long *length,
@@ -79,7 +79,7 @@ void lib_mysqludf_info_deinit( UDF_INIT* initid );
 
 
 /**
- * @fn my_bool lib_mysqludf_preg_info_init(UDF_INIT *initid, UDF_ARGS *args, 
+ * @fn bool lib_mysqludf_preg_info_init(UDF_INIT *initid, UDF_ARGS *args, 
  *                                         char *message)
  *
  * @brief
@@ -98,7 +98,7 @@ void lib_mysqludf_info_deinit( UDF_INIT* initid );
  *
  * @details This function checks to make sure there are no arguments.
  */
-my_bool lib_mysqludf_preg_info_init(UDF_INIT *initid, UDF_ARGS *args, 
+bool lib_mysqludf_preg_info_init(UDF_INIT *initid, UDF_ARGS *args, 
                                     char *message)
 {
     if (args->arg_count != 0)
