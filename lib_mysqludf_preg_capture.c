@@ -120,7 +120,7 @@
 /*
  * Public function declarations:
  */
-my_bool preg_capture_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+bool preg_capture_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
 char *preg_capture( UDF_INIT *initid __attribute__((unused)),
                     UDF_ARGS *args, char *result, unsigned long *length,
                     char *is_null __attribute__((unused)),
@@ -129,7 +129,7 @@ void preg_capture_deinit( UDF_INIT* initid );
 
 
 /**
- * @fn my_bool preg_capture_init(UDF_INIT *initid, UDF_ARGS *args, 
+ * @fn bool preg_capture_init(UDF_INIT *initid, UDF_ARGS *args, 
  *                               char *message)
  *
  * @brief
@@ -150,7 +150,7 @@ void preg_capture_deinit( UDF_INIT* initid );
  * It also checks to make sure there are at least arguments, and checks
  * the type of the 'group'  and 'occurence' arguments.
  */
-my_bool preg_capture_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
+bool preg_capture_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count < 2)
     {

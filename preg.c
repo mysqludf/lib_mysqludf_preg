@@ -319,7 +319,7 @@ void pregDeInit(UDF_INIT *initid)
 
 
 /**
- * @fn my_bool pregInit(UDF_INIT *initid, UDF_ARGS *args, char *message)
+ * @fn bool pregInit(UDF_INIT *initid, UDF_ARGS *args, char *message)
  *
  * @brief
  *     Perform the init stuff common to all preg routines
@@ -341,7 +341,7 @@ void pregDeInit(UDF_INIT *initid)
  * and compiling  the first argument (the pattern) if it 
  * is a constant.
  */
-my_bool pregInit(UDF_INIT *initid, UDF_ARGS *args, char *message)
+bool pregInit(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     struct preg_s *ptr;       /* temp holder of initid->ptr */
     int i ;
