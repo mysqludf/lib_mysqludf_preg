@@ -20,6 +20,17 @@ Version 1.1 changes the way NULLs are handled. To restore the legacy NULL handli
  --enable-legacy-nulls
 
 
+Example  (on Ubuntu 20.04 with MySQl 8.0.28)
+------------------------------
+==  Install Build Libraries ==
+`sudo apt install build-essential libpcre3-dev git autoconf libtool libmysqlclient-dev`
+
+== Configure == 
+`autoreconf -f -i`
+`./configure`
+`make`
+`sudo make install`
+` mysql -u root -p < installdb.sql`
 
 Example  (on macosx with fink)
 ------------------------------
