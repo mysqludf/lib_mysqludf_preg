@@ -63,7 +63,7 @@ char *pregReplace(pcre *re , pcre_extra *extra ,
 // preg.c
 void destroyPtrInfo( struct preg_s *ghptr );
 int initPtrInfo( struct preg_s *ghptr , UDF_ARGS *args,char*msg );
-my_bool pregInit(UDF_INIT *initid, UDF_ARGS *args, char *message);
+bool pregInit(UDF_INIT *initid, UDF_ARGS *args, char *message);
 pcre *pregCompileRegexArg( UDF_ARGS *args , char *msg , int msglen ) ;
 int pregCopyToReturnBuffer( struct preg_s *ptr , char *s  , int l );
 void pregDeInit(UDF_INIT *initid) ;

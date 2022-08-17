@@ -87,7 +87,7 @@
 /**
  * Public function declarations:
  */
-my_bool preg_rlike_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+bool preg_rlike_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
 longlong preg_rlike(UDF_INIT *initid __attribute__((unused)),
                       UDF_ARGS *args,
                       char *is_null __attribute__((unused)),
@@ -100,7 +100,7 @@ void preg_rlike_deinit( UDF_INIT* initid );
  */
 
 /**
- * @fn my_bool preg_rlike_init(UDF_INIT *initid, UDF_ARGS *args, 
+ * @fn bool preg_rlike_init(UDF_INIT *initid, UDF_ARGS *args, 
  *                             char *message)
  *
  * @brief
@@ -120,7 +120,7 @@ void preg_rlike_deinit( UDF_INIT* initid );
  * @details This function checks to make sure there are 2 arguments.  It
  * then call pregInit to perform the common initializations.
  */
-my_bool preg_rlike_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
+bool preg_rlike_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count != 2)
     {

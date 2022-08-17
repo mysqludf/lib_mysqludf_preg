@@ -87,7 +87,7 @@
 /**
  * Public function declarations:
  */
-my_bool preg_check_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+bool preg_check_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
 longlong preg_check(UDF_INIT *initid __attribute__((unused)),
                       UDF_ARGS *args,
                       char *is_null __attribute__((unused)),
@@ -100,7 +100,7 @@ void preg_check_deinit( UDF_INIT* initid );
  */
 
 /**
- * @fn my_bool preg_check_init(UDF_INIT *initid, UDF_ARGS *args, 
+ * @fn bool preg_check_init(UDF_INIT *initid, UDF_ARGS *args, 
  *                             char *message)
  *
  * @brief
@@ -120,7 +120,7 @@ void preg_check_deinit( UDF_INIT* initid );
  * @details This function checks to make sure there is 1 argument.  It
  * then call pregInit to perform the common initializations.
  */
-my_bool preg_check_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
+bool preg_check_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
     if (args->arg_count != 1)
     {
