@@ -61,7 +61,7 @@ SELECT * from products WHERE PREG_RLIKE( '/hemp/i' , products.title )
 SELECT CONVERT( PREG_REPLACE( '/fox/i' , 'dog' , 'The brown fox' ) USING UTF8) as replaced;
 ```
 
-Please see test/lib_udfmysql_preg.test and test/lib_udfmysql_preg.result for 
+Please see the test/lib_mysqludf_preg_*.test and .result files for 
 more examples.
 
 
@@ -81,6 +81,10 @@ for the full installation instructions.
 The short instructions are:
 
     ./configure; make  install; make installdb ; make test
+
+MariaDB (for example Ubuntu 26.04 with MariaDB 11.8) needs extra configure
+options, and `make test` doesn't work with its mysqltest. See the Ubuntu 26.04
+example in INSTALL.
 
 
 

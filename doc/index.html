@@ -18,7 +18,7 @@ lib_mysqludf_preg is distributed as a source package. (Binaries are available fo
 From Source</a></h3>
 <h4><a class="anchor" name="Prerequisites">
 Prerequisites</a></h4>
-These UDFs require that the libpcre headers and library are installed. For debian/ubuntu type systems, installing libpcre3-dev should be sufficient. (<em>apt-get install libpcre3-dev</em>).<h4><a class="anchor" name="Compilation">
+These UDFs require that the libpcre headers and library are installed. For debian/ubuntu type systems, installing libpcre3-dev should be sufficient. (<em>apt-get install libpcre3-dev</em>). Ubuntu 26.04 and Debian 13 no longer ship libpcre3; see the INSTALL file.<h4><a class="anchor" name="Compilation">
 Compilation</a></h4>
 Most users should be able to simply type: <em>./configure ; make install</em><p>
 If mysql is an unusual place, you might need to add --with-mysql=&lt;mysql directory&gt;/bin/mysql_config.<p>

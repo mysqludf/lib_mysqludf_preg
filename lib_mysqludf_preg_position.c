@@ -215,7 +215,7 @@ longlong preg_position( UDF_INIT *initid, UDF_ARGS *args, char *is_null,
         || ghargIsNullConstant( args , 2 ) ) 
     {
         *is_null = 1 ; 
-        return NULL ; 
+        return 0 ; 
     }
 #endif
 

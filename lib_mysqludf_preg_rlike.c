@@ -176,7 +176,7 @@ longlong preg_rlike( UDF_INIT *initid ,  UDF_ARGS *args, char *is_null,
         if( ghargIsNullConstant( args , 0 ) || ghargIsNullConstant( args , 1 ) )
         {
             *is_null = 1 ; 
-            return NULL ; 
+            return 0 ; 
         }
 #endif
 

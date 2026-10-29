@@ -34,6 +34,7 @@
 
 // Include the libpcre headers
 #include <pcre.h>
+#include "ghfcns.h"
 #include "from_php.h"
 
 /*

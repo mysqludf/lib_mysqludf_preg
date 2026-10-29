@@ -32,6 +32,7 @@
  *        without mysql
  */
 
+#define _GNU_SOURCE  /* pthread_getattr_np() */
 #include <pthread.h>
 
 #include "preg_utils.h"

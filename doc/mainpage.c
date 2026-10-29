@@ -62,6 +62,8 @@
  * These UDFs require that the libpcre headers and library are
  * installed. For debian/ubuntu type systems, installing libpcre3-dev
  * should be sufficient. (<em>apt-get install libpcre3-dev</em>).
+ * Ubuntu 26.04 and Debian 13 no longer ship libpcre3; see the INSTALL
+ * file.
  *
  * @subsubsection Compilation
  * 

@@ -1,4 +1,14 @@
 
+Unreleased
+==========
+- Builds with GCC 14+ (Ubuntu 26.04): declare ghlogprintf where it's used,
+  define _GNU_SOURCE for pthread_getattr_np, return 0 instead of NULL from
+  the integer functions
+- MariaDB 11.8: build against the server headers; Ubuntu 26.04 / MariaDB
+  install and test notes in INSTALL
+- MySQL 8: my_bool replaced with bool
+
+
 1.2
 ===
 - Fixed problems with preg_position

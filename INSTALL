@@ -32,6 +32,40 @@ Example  (on Ubuntu 20.04 with MySQl 8.0.28)
 `sudo make install`
 ` mysql -u root -p < installdb.sql`
 
+
+Example  (on Ubuntu 26.04 with MariaDB 11.8)
+------------------------------
+Ubuntu 26.04 (like Debian 13) no longer ships PCRE1 (libpcre3), which this
+library uses. Ondřej Surý's PHP repository still has it. Skip this step if
+packages.sury.org is already set up for PHP:
+`sudo curl -fsSL https://packages.sury.org/php/apt.gpg -o /etc/apt/keyrings/deb.sury.org-php.gpg`
+`printf 'Types: deb\nURIs: https://packages.sury.org/php/\nSuites: resolute\nComponents: main\nSigned-By: /etc/apt/keyrings/deb.sury.org-php.gpg\n' | sudo tee /etc/apt/sources.list.d/php.sources`
+`sudo apt update`
+
+==  Install Build Libraries ==
+`sudo apt install build-essential autoconf automake libtool libpcre3-dev libmariadb-dev libmariadb-dev-compat libmariadbd-dev`
+
+A server that only runs the library needs just `sudo apt install libpcre3`.
+
+== Configure ==
+Build against the MariaDB server headers (libmariadbd-dev): the client
+headers' UDF_ARGS is missing fields the server passes. Set libdir to the
+server's plugin directory (`SELECT @@plugin_dir;`), because configure
+otherwise picks the client plugin directory that mysql_config reports.
+`autoreconf -f -i`
+`./configure --libdir=/usr/lib/mysql/plugin --disable-static CPPFLAGS=-I/usr/include/mariadb/server`
+`make`
+`sudo make install`
+`sudo mariadb < installdb.sql`
+
+== Test ==
+MariaDB's mysqltest has no --include option, so `make test` fails. Run the
+tests with mariadb-test (package mariadb-test) instead. They create a
+preg_test database, so use a build machine, or drop it afterwards:
+`cd test`
+`for t in *.test; do cat create_testdb.sql $t | sudo mariadb-test --result-file=${t%.test}.result >/dev/null && echo "ok $t" || echo "FAIL $t"; done`
+`sudo mariadb -e 'DROP DATABASE IF EXISTS preg_test'`
+
 Example  (on macosx with fink)
 ------------------------------
 ./configure --with-pcre-prefix=/sw  --with-mysql=/sw/bin/mysql_config
